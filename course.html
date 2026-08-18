@@ -194,12 +194,12 @@
 
 <div class="container">
     <header>
-        <h1>남김없이 나들이 & 맛집 목록</h1>
+        <h1>남김없이 서울 여행 & 맛집 목록</h1>
         <p>엄선된 장소 중 일정에 맞게 선택해 보세요</p>
         <div class="tag-group">
             <span class="tag">#남이와 섭이 정성을 다해모심</span>
             <span class="tag">#나들이&맛집</span>
-            <span class="tag">#지역별코스</span>
+            <span class="tag">#조건부뽑기</span>
         </div>
     </header>
 
@@ -207,88 +207,107 @@
     <div class="ladder-section">
         <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
         <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 노빠꾸여! 식사 장소 뽑기 🎲</button>
+        <button class="roulette-btn" onclick="pickFirstMeal()">첫 식사 장소 뽑기 🎲</button>
         <div id="firstMealResult" class="result-box"></div>
     </div>
 
-    <!-- 2일차: 지역별 투어 카테고리 -->
+    <!-- 2일차 아침: 관악산 연주대 새벽 등산 룰렛 -->
+    <div class="ladder-section">
+        <div class="ladder-title">⛰️ [둘째날 아침 특별 코스] 관악산 연주대 새벽 등산</div>
+        <div class="ladder-desc">새벽 등산을 도전할지 말지 운명에 맡겨보세요!</div>
+        <button class="roulette-btn" onclick="pickMorningHike()">등산 여부 뽑기 🎲</button>
+        <div id="morningHikeResult" class="result-box"></div>
+    </div>
+
+    <!-- 2일차 11시부터 오후 코스: 권역 및 구 조합 룰렛 -->
+    <div class="ladder-section">
+        <div class="ladder-title">🚗 [11시부터 오후 코스] 투어 지역 뽑기</div>
+        <div class="ladder-desc">1단계: 서울 안 vs 서울 근교 ➔ 2단계: 상세 투어 조합 선택</div>
+        <button class="roulette-btn" onclick="pickAfternoonTour()">오후 투어 코스 뽑기 🎲</button>
+        <div id="afternoonTourResult" class="result-box"></div>
+    </div>
+
+    <!-- 지역별 상세 장소 안내 카드 -->
     <div class="section-card">
-        <div class="section-title">🗺️ [둘째날] 종로구 투어</div>
-        <div class="place-grid">
+        <div class="section-title">🏛️ 서울 시내 투어 후보 장소</div>
+        
+        <div class="sub-category-title">종로구</div>
+        <div class="place-grid" style="margin-bottom: 8px;">
             <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
             <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
             <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
         </div>
-    </div>
 
-    <div class="section-card">
-        <div class="section-title">🏛️ [둘째날] 동대문구 투어</div>
-        <div class="place-grid">
+        <div class="sub-category-title">동대문구</div>
+        <div class="place-grid" style="margin-bottom: 8px;">
             <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
             <a href="https://map.naver.com/v5/search/동묘 벼룩시장" target="_blank" class="place-item">🛍️ 동묘 벼룩시장</a>
         </div>
-    </div>
 
-    <div class="section-card">
-        <div class="section-title">📜 [둘째날] 서대문구 & 서울 기타 투어</div>
+        <div class="sub-category-title">서대문구 / 용산구 / 기타</div>
         <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
+            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소 (서대문)</a>
             <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관 (용산)</a>
             <a href="https://map.naver.com/v5/search/고창복낙지세상 봉천점" target="_blank" class="place-item">🐙 고창복낙지세상 (관악)</a>
-            <a href="https://map.naver.com/v5/search/관악산 연주대" target="_blank" class="place-item">⛰️ 관악산 연주대 (관악)</a>
             <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
         </div>
     </div>
 
     <div class="section-card">
-        <div class="section-title">🚗 [둘째날] 서울 근교 투어</div>
+        <div class="section-title">🏞️ 서울 근교 투어 후보 장소</div>
         
+        <div class="sub-category-title">경기 용인</div>
+        <div class="place-grid" style="margin-bottom: 8px;">
+            <a href="https://map.naver.com/v5/search/만물도깨비경매장 본점" target="_blank" class="place-item">👹 만물도깨비경매장 본점</a>
+            <a href="https://map.naver.com/v5/search/용인에버랜드 사파리" target="_blank" class="place-item">🦁 용인 에버랜드 사파리</a>
+        </div>
+
         <div class="sub-category-title">경기 광주</div>
-        <div class="place-grid" style="margin-bottom: 10px;">
+        <div class="place-grid" style="margin-bottom: 8px;">
             <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
             <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
             <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
         </div>
 
-        <div class="sub-category-title">경기 용인 / 기타 근교</div>
+        <div class="sub-category-title">인천 / 파주 / 부천 / 광명</div>
         <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/용인에버랜드 사파리" target="_blank" class="place-item">🦁 용인 에버랜드 사파리</a>
-            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장 (부천)</a>
+            <a href="https://map.naver.com/v5/search/코리안숯불닭바베큐 용현점" target="_blank" class="place-item">🍗 코리안숯불닭바베큐 (용현동)</a>
             <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광 (파주)</a>
+            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장 (부천)</a>
+            <a href="https://map.naver.com/v5/search/돼지집" target="_blank" class="place-item">🐖 돼지집 (광명)</a>
         </div>
-    </div>
-
-    <!-- 둘째날 전체 장소 랜덤 뽑기 -->
-    <div class="ladder-section">
-        <div class="ladder-title">🎯 "어디갈지 고민될 때" 전체 뽑기</div>
-        <div class="ladder-desc">모든 둘째날 후보 장소 중 하나를 무작위로 선택합니다.</div>
-        <button class="roulette-btn" onclick="runLadder()">둘째날 코스 뽑기 🎲</button>
-        <div id="resultBox" class="result-box"></div>
     </div>
 </div>
 
 <script>
-    // 첫날 첫 식사 후보
+    // 1일차 첫 식사
     const firstMeals = ["🐖 돼지집", "🍚 백승희의들밥"];
 
-    // 둘째날 장소 후보
-    const places = [
-        "🌿 서울한방진흥센터",
-        "🍵 차차티클럽 창신한옥",
-        "🍜 일월의제면소 흥인지문",
-        "☕ 다향찻집",
-        "⛪ 천진암성지",
-        "🏔️ 남한산성둘레길",
-        "💈 헤어사파리",
-        "🦁 용인에버랜드 사파리",
-        "🏛️ 서대문형무소",
-        "♨️ 궁전참숯가마",
-        "🦀 봉순게장",
-        "🐙 고창복낙지세상 봉천점",
-        "🏛️ 국립중앙박물관",
-        "🕊️ DMZ 평화관광",
-        "⛰️ 관악산 연주대",
-        "🛍️ 동묘 벼룩시장"
+    // 2일차 아침 등산
+    const morningHikeOptions = [
+        "🏃‍♂️ 관악산 연주대 새벽 등산 진행! (새벽 공기 마시며 상쾌하게 출발)",
+        "😴 관악산 연주대 새벽 등산 패스! (푹 자고 11시 코스부터 쾌적하게 시작)"
+    ];
+
+    // 2일차 오후 투어 선택지
+    const seoulTours = [
+        "동대문구 & 서대문구 투어",
+        "동대문구 & 용산구 투어",
+        "동대문구 & 종로구 투어",
+        "동대문구 & 마포구 투어",
+        "서대문구 & 용산구 투어",
+        "서대문구 & 종로구 투어",
+        "서대문구 & 마포구 투어",
+        "용산구 & 종로구 투어",
+        "용산구 & 마포구 투어"
+    ];
+
+    const suburbTours = [
+        "경기 광주 투어 (천진암성지, 남한산성둘레길, 궁전참숯가마)",
+        "경기 용인 투어 (만물도깨비경매장 본점, 에버랜드 사파리)",
+        "인천 투어 (코리안숯불닭바베큐 용현동 등)",
+        "경기 파주 투어 (DMZ 평화관광)",
+        "경기 광명 투어 (돼지집 등)"
     ];
 
     function pickFirstMeal() {
@@ -308,21 +327,45 @@
         }, 500);
     }
 
-    function runLadder() {
-        const resultBox = document.getElementById('resultBox');
+    function pickMorningHike() {
+        const resultBox = document.getElementById('morningHikeResult');
         resultBox.style.display = 'block';
-        resultBox.innerHTML = '🎲 둘째날 운명의 장소를 뽑는 중입니다...';
+        resultBox.innerHTML = '🎲 새벽 등산 운명을 정하는 중...';
 
         setTimeout(() => {
-            const selected = places[Math.floor(Math.random() * places.length)];
-            const cleanName = selected.replace(/^[^\s]+\s/, '');
+            const selected = morningHikeOptions[Math.floor(Math.random() * morningHikeOptions.length)];
             
             resultBox.innerHTML = `
-                🎉 추천하는 둘째날 나들이 장소: <br>
-                <strong style="font-size:1.2rem; color:#d97724; display:block; margin:8px 0;">${selected}</strong>
-                <a href="https://map.naver.com/v5/search/${encodeURIComponent(cleanName)}" target="_blank" class="map-btn">네이버 지도에서 보기 ↗</a>
+                🎉 둘째날 아침 결정: <br>
+                <strong style="font-size:1.1rem; color:#d97724; display:block; margin:8px 0;">${selected}</strong>
             `;
         }, 500);
+    }
+
+    function pickAfternoonTour() {
+        const resultBox = document.getElementById('afternoonTourResult');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '🎲 1단계: 서울 안 vs 서울 근교 결정 중...';
+
+        setTimeout(() => {
+            const isSeoul = Math.random() < 0.5;
+            
+            if (isSeoul) {
+                const tour = seoulTours[Math.floor(Math.random() * seoulTours.length)];
+                resultBox.innerHTML = `
+                    📍 1단계 결과: <strong style="color:#d97724;">[서울 안 투어]</strong> 당첨!<br>
+                    🎉 2단계 세부 코스: <br>
+                    <strong style="font-size:1.15rem; color:#d97724; display:block; margin:8px 0;">🗺️ ${tour}</strong>
+                `;
+            } else {
+                const tour = suburbTours[Math.floor(Math.random() * suburbTours.length)];
+                resultBox.innerHTML = `
+                    📍 1단계 결과: <strong style="color:#d97724;">[서울 근교 투어]</strong> 당첨!<br>
+                    🎉 2단계 세부 코스: <br>
+                    <strong style="font-size:1.15rem; color:#d97724; display:block; margin:8px 0;">🚗 ${tour}</strong>
+                `;
+            }
+        }, 600);
     }
 </script>
 
