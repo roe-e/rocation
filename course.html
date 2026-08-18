@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서울 강북 도심·감성 당일치기 여행</title>
+    <title>남김없이 맞춤형 여행 & 식사 코스</title>
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -132,9 +132,6 @@
             font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .spot-desc {
@@ -168,6 +165,63 @@
             font-weight: 600;
         }
 
+        /* 사다리 타기 / 랜덤 뽑기 섹션 */
+        .ladder-section {
+            margin-top: 32px;
+            background: #fff;
+            border: 2px dashed var(--accent-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .ladder-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .ladder-desc {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-bottom: 16px;
+        }
+
+        .roulette-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(217, 119, 36, 0.3);
+            transition: transform 0.1s ease;
+        }
+
+        .roulette-btn:active {
+            transform: scale(0.96);
+        }
+
+        .result-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: #fdfbf7;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-hover);
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hidden {
             display: none;
         }
@@ -180,9 +234,9 @@
         <h1>서울 강북 감성 당일치기 코스</h1>
         <p>요청하신 제외 구역을 완벽히 배제한 알찬 추천 동선</p>
         <div class="tag-group">
-            <span class="tag">#영등포/노원/도봉/강북/중랑_제외</span>
             <span class="tag">#강북권역</span>
-            <span class="tag">#취향선택</span>
+            <span class="tag">#부모님취향저격</span>
+            <span class="tag">#사다리타기</span>
         </div>
     </header>
 
@@ -260,17 +314,45 @@
             <a href="https://map.naver.com/v5/search/뚝섬한강공원" target="_blank" class="map-btn">지도 검색 ↗</a>
         </div>
     </div>
+
+    <!-- 사다리 타기 / 랜덤 뽑기 -->
+    <div class="ladder-section">
+        <div class="ladder-title">🎯 "아무거나!" 할 때 누르는 랜덤 뽑기</div>
+        <div class="ladder-desc">부모님이 메뉴 선택을 미루실 때 버튼을 눌러 바로 결정해 보세요.</div>
+        <button class="roulette-btn" onclick="runLadder()">운명의 장소 뽑기 🎲</button>
+        <div id="resultBox" class="result-box"></div>
+    </div>
 </div>
 
 <script>
     function switchCourse(courseId, btnElement) {
         document.getElementById('course1').classList.add('hidden');
         document.getElementById('course2').classList.add('hidden');
-                                                            
+        
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         
         document.getElementById(courseId).classList.remove('hidden');
         btnElement.classList.add('active');
+    }
+
+    const places = [
+        "🍲 서촌 고즈넉한 한옥 퓨전 한식당",
+        "☕ 통의동 감성 카페 & 디저트",
+        "🍷 종로 분위기 좋은 전통주/와인 요리주점",
+        "🥗 성수동 연무장길 트렌디 브런치",
+        "🍰 서울숲 아뜰리에길 베이커리 카페",
+        "🍖 성수동 정갈한 숯불구이 / 다이닝"
+    ];
+
+    function runLadder() {
+        const resultBox = document.getElementById('resultBox');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '🎲 운명의 사다리를 타는 중...';
+
+        setTimeout(() => {
+            const randomIndex = Math.floor(Math.random() * places.length);
+            resultBox.innerHTML = `🎉 오늘 부모님과 갈 곳: <br><strong style="font-size:1.15rem; color:#d97724;">${places[randomIndex]}</strong>`;
+        }, 600);
     }
 </script>
 
