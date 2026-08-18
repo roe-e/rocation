@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>남김없이 서울 여행 & 식사</title>
+    <title>남김없이 나들이 & 맛집 목록</title>
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -92,42 +92,26 @@
         .place-item {
             font-size: 0.8rem;
             background: #faf6f0;
-            padding: 6px 10px;
+            padding: 8px 10px;
             border-radius: 6px;
-            color: var(--text-main);
-        }
-
-        .spot-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .spot-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .spot-desc {
-            font-size: 0.85rem;
-            color: var(--text-sub);
-            line-height: 1.4;
-            margin-bottom: 10px;
-        }
-
-        .map-btn {
-            display: inline-block;
-            padding: 6px 12px;
-            background: #f7f3ed;
             color: var(--text-main);
             text-decoration: none;
-            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .place-item:hover {
+            background: #f0e6d8;
+            transform: translateY(-1px);
+        }
+
+        .place-item::after {
+            content: "↗";
             font-size: 0.75rem;
-            font-weight: 600;
+            color: var(--text-sub);
+            margin-left: 4px;
         }
 
         .ladder-section {
@@ -179,6 +163,18 @@
             color: var(--accent-hover);
             display: none;
         }
+
+        .map-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #f7f3ed;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -194,26 +190,26 @@
         </div>
     </header>
 
-    <!-- 전체 장소 목록 미리보기 -->
+    <!-- 전체 장소 목록 미리보기 (클릭 시 네이버 지도 이동) -->
     <div class="place-list-box">
         <div class="place-list-title">📌 전체 추천 장소 (16곳)</div>
         <div class="place-grid">
-            <div class="place-item">🌿 서울한방진흥센터</div>
-            <div class="place-item">🍵 차차티클럽 창신한옥</div>
-            <div class="place-item">🍜 일월의제면소 흥인지문</div>
-            <div class="place-item">☕ 다향찻집</div>
-            <div class="place-item">⛪ 천진암성지</div>
-            <div class="place-item">🏔️ 남한산성둘레길</div>
-            <div class="place-item">🦁 용인에버랜드 사파리</div>
-            <div class="place-item">🏛️ 서대문형무소</div>
-            <div class="place-item">♨️ 궁전참숯가마</div>
-            <div class="place-item">🦀 봉순게장</div>
-            <div class="place-item">🐙 고창복낙지세상 봉천점</div>
-            <div class="place-item">🏛️ 국립중앙박물관</div>
-            <div class="place-item">🐖 돼지집</div>
-            <div class="place-item">🕊️ DMZ 평화관광</div>
-            <div class="place-item">⛰️ 관악산 연주대</div>
-            <div class="place-item">💈 헤어사파리</div>
+            <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
+            <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
+            <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
+            <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
+            <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
+            <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
+            <a href="https://map.naver.com/v5/search/용인에버랜드 사파리" target="_blank" class="place-item">🦁 용인에버랜드 사파리</a>
+            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
+            <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
+            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장</a>
+            <a href="https://map.naver.com/v5/search/고창복낙지세상 봉천점" target="_blank" class="place-item">🐙 고창복낙지세상 봉천점</a>
+            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관</a>
+            <a href="https://map.naver.com/v5/search/돼지집" target="_blank" class="place-item">🐖 돼지집</a>
+            <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광</a>
+            <a href="https://map.naver.com/v5/search/관악산 연주대" target="_blank" class="place-item">⛰️ 관악산 연주대</a>
+            <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
         </div>
     </div>
 
