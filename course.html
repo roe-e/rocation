@@ -28,7 +28,7 @@
             padding: 24px 16px;
             display: flex;
             justify-content: center;
-            font-size: 18px; /* 전체 기본 글자 크기 확대 */
+            font-size: 18px;
             line-height: 1.6;
         }
 
@@ -43,14 +43,14 @@
         }
 
         header h1 {
-            font-size: 1.9rem; /* 메인 제목 확대 */
+            font-size: 1.9rem;
             font-weight: 800;
             color: var(--text-main);
             margin-bottom: 10px;
         }
 
         header p {
-            font-size: 1.15rem; /* 설명글 확대 */
+            font-size: 1.15rem;
             color: var(--text-sub);
             font-weight: 500;
         }
@@ -82,7 +82,7 @@
         }
 
         .section-title {
-            font-size: 1.35rem; /* 카드 제목 확대 */
+            font-size: 1.35rem;
             font-weight: 800;
             margin-bottom: 16px;
             color: var(--accent-hover);
@@ -98,7 +98,7 @@
         }
 
         .place-item {
-            font-size: 1.05rem; /* 장소 이름 확대 */
+            font-size: 1.05rem;
             font-weight: 600;
             background: #faf4ed;
             padding: 12px 14px;
@@ -133,14 +133,14 @@
         }
 
         .ladder-title {
-            font-size: 1.3rem; /* 룰렛 제목 확대 */
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--text-main);
             margin-bottom: 8px;
         }
 
         .ladder-desc {
-            font-size: 1.05rem; /* 룰렛 설명 확대 */
+            font-size: 1.05rem;
             color: var(--text-sub);
             margin-bottom: 16px;
         }
@@ -149,10 +149,10 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 14px 28px; /* 버튼 누르기 쉽게 터치 영역 확대 */
+            padding: 14px 28px;
             border-radius: 30px;
             font-weight: 800;
-            font-size: 1.15rem; /* 버튼 글자 확대 */
+            font-size: 1.15rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(217, 119, 36, 0.3);
             transition: transform 0.1s ease;
@@ -175,7 +175,7 @@
             background: #fdf8f2;
             border: 1px solid #f0e2d0;
             border-radius: 12px;
-            font-size: 1.15rem; /* 결과창 글자 확대 */
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--accent-hover);
             display: none;
@@ -195,7 +195,7 @@
         }
 
         .sub-category-title {
-            font-size: 1.1rem; /* 소분류 구/지역 제목 확대 */
+            font-size: 1.1rem;
             font-weight: 800;
             color: var(--text-sub);
             margin: 16px 0 10px 0;
@@ -228,7 +228,7 @@
     <div class="ladder-section">
         <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
         <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쎠! 첫 식사 장소 뽑기 🎲</button>
+        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쪄!확쒸이 첫 식사 장소 뽑기 🎲</button>
         <div id="firstMealResult" class="result-box"></div>
     </div>
 
@@ -278,7 +278,6 @@
         <div class="place-grid" style="margin-bottom: 12px;">
             <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
             <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
-            <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
         </div>
 
         <div class="sub-category-title">동대문구</div>
@@ -315,6 +314,7 @@
         <div class="place-grid" style="margin-bottom: 12px;">
             <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
             <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
+            <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
         </div>
 
         <div class="sub-category-title">경기 파주</div>
@@ -349,7 +349,7 @@
 
     // 2일차 오후 근교 세부 코스
     const suburbTours = [
-        "경기 광주 투어 (천진암성지, 남한산성둘레길)",
+        "경기 광주 투어 (천진암성지, 남한산성둘레길, 다향찻집)",
         "경기 용인 투어 (만물도깨비경매장 본점, 에버랜드 사파리)",
         "경기 시흥 투어 (궁전참숯가마, 봉순게장, 코리안숯불닭바베큐)",
         "경기 파주 투어 (DMZ 평화관광)"
