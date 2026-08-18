@@ -228,7 +228,7 @@
     <div class="ladder-section">
         <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
         <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쪄!!첫 식사 장소 뽑기 🎲</button>
+        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쪄!첫 식사 장소 뽑기 🎲</button>
         <div id="firstMealResult" class="result-box"></div>
     </div>
 
@@ -291,11 +291,25 @@
             <a href="https://map.naver.com/v5/search/동묘 벼룩시장" target="_blank" class="place-item">🛍️ 동묘 벼룩시장</a>
         </div>
 
-        <div class="sub-category-title">서대문구 / 용산구 / 마포구</div>
+        <div class="sub-category-title">서대문구</div>
+        <div class="place-grid" style="margin-bottom: 12px;">
+            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
+            <a href="https://map.naver.com/v5/search/안산자락길" target="_blank" class="place-item">🌲 안산자락길</a>
+            <a href="https://map.naver.com/v5/search/무악동 봉수대" target="_blank" class="place-item">⛰️ 무악동 봉수대</a>
+        </div>
+
+        <div class="sub-category-title">용산구</div>
+        <div class="place-grid" style="margin-bottom: 12px;">
+            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관</a>
+            <a href="https://map.naver.com/v5/search/해방식당" target="_blank" class="place-item">🍽️ 해방식당</a>
+            <a href="https://map.naver.com/v5/search/해방촌 신흥시장" target="_blank" class="place-item">🛍️ 해방촌 신흥시장</a>
+            <a href="https://map.naver.com/v5/search/카페타자기" target="_blank" class="place-item">☕ 카페타자기</a>
+            <a href="https://map.naver.com/v5/search/케냐키암부커피" target="_blank" class="place-item">☕ 케냐키암부커피</a>
+        </div>
+
+        <div class="sub-category-title">마포구</div>
         <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소 (서대문)</a>
-            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관 (용산)</a>
-            <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리 (마포)</a>
+            <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
         </div>
     </div>
 
@@ -340,21 +354,18 @@
 
     // 2일차 오후 서울 세부 코스
     const seoulTours = [
-        "중구 & 종로구 투어",
-        "중구 & 동대문구 투어",
-        "중구 & 용산구 투어",
-        "중구 & 마포구 투어",
-        "중구 & 서대문구 투어",
+        "중구 (화폐박물관) & 종로구 투어",
+        "중구 (화폐박물관) & 동대문구 투어",
+        "중구 (화폐박물관) & 용산구 투어",
         "동대문구 & 서대문구 투어",
         "동대문구 & 용산구 투어",
         "동대문구 & 종로구 투어",
         "동대문구 & 마포구 투어",
-        "서대문구 & 용산구 투어",
+        "서대문구 (형무소/안산자락길/봉수대) & 용산구 (해방촌) 투어",
         "서대문구 & 종로구 투어",
         "서대문구 & 마포구 투어",
-        "종로구 & 마포구 투어",
-        "용산구 & 종로구 투어",
-        "용산구 & 마포구 투어"
+        "용산구 (국립중앙박물관/해방촌) & 종로구 투어",
+        "용산구 (국립중앙박물관/해방촌) & 마포구 투어"
     ];
 
     // 2일차 오후 근교 세부 코스
