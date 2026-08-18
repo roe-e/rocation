@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>남김없이 나들이 & 맛집 목록</title>
+    <title>남김없이 서울 여행 & 맛집 목록</title>
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -68,19 +68,23 @@
             font-size: 0.75rem;
         }
 
-        .place-list-box {
+        .section-card {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
-        .place-list-title {
-            font-size: 0.95rem;
+        .section-title {
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--accent-hover);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .place-grid {
@@ -115,16 +119,16 @@
         }
 
         .ladder-section {
-            margin-top: 24px;
             background: #fff;
             border: 2px dashed var(--accent-color);
             border-radius: 16px;
             padding: 20px;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .ladder-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 6px;
@@ -133,19 +137,19 @@
         .ladder-desc {
             font-size: 0.8rem;
             color: var(--text-sub);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .roulette-btn {
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 24px;
+            padding: 10px 20px;
+            border-radius: 20px;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(217, 119, 36, 0.3);
+            box-shadow: 0 4px 10px rgba(217, 119, 36, 0.25);
             transition: transform 0.1s ease;
         }
 
@@ -154,11 +158,11 @@
         }
 
         .result-box {
-            margin-top: 16px;
-            padding: 14px;
+            margin-top: 14px;
+            padding: 12px;
             background: #fdfbf7;
             border-radius: 10px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--accent-hover);
             display: none;
@@ -167,13 +171,22 @@
         .map-btn {
             display: inline-block;
             margin-top: 8px;
-            padding: 6px 12px;
+            padding: 5px 10px;
             background: #f7f3ed;
             color: var(--text-main);
             text-decoration: none;
             border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 600;
+        }
+
+        .sub-category-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin: 12px 0 6px 0;
+            padding-left: 4px;
+            border-left: 3px solid var(--accent-color);
         }
     </style>
 </head>
@@ -182,47 +195,83 @@
 <div class="container">
     <header>
         <h1>남김없이 나들이 & 맛집 목록</h1>
-        <p>엄선된 16개 후보 장소 중 선택해 보세요</p>
+        <p>엄선된 장소 중 일정에 맞게 선택해 보세요</p>
         <div class="tag-group">
             <span class="tag">#남이와 섭이 정성을 다해모심</span>
             <span class="tag">#나들이&맛집</span>
-            <span class="tag">#아무거나사다리</span>
+            <span class="tag">#지역별코스</span>
         </div>
     </header>
 
-    <!-- 전체 장소 목록 미리보기 (클릭 시 네이버 지도 이동) -->
-    <div class="place-list-box">
-        <div class="place-list-title">📌 전체 추천 장소 (16곳)</div>
+    <!-- 1일차: 첫 식사 선택 룰렛 -->
+    <div class="ladder-section">
+        <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
+        <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
+        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 노빠꾸여! 식사 장소 뽑기 🎲</button>
+        <div id="firstMealResult" class="result-box"></div>
+    </div>
+
+    <!-- 2일차: 지역별 투어 카테고리 -->
+    <div class="section-card">
+        <div class="section-title">🗺️ [둘째날] 종로구 투어</div>
         <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
             <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
             <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
             <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
-            <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
-            <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
-            <a href="https://map.naver.com/v5/search/용인에버랜드 사파리" target="_blank" class="place-item">🦁 용인에버랜드 사파리</a>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">🏛️ [둘째날] 동대문구 투어</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
+            <a href="https://map.naver.com/v5/search/동묘 벼룩시장" target="_blank" class="place-item">🛍️ 동묘 벼룩시장</a>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">📜 [둘째날] 서대문구 & 서울 기타 투어</div>
+        <div class="place-grid">
             <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
-            <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
-            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장</a>
-            <a href="https://map.naver.com/v5/search/고창복낙지세상 봉천점" target="_blank" class="place-item">🐙 고창복낙지세상 봉천점</a>
-            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관</a>
-            <a href="https://map.naver.com/v5/search/돼지집" target="_blank" class="place-item">🐖 돼지집</a>
-            <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광</a>
-            <a href="https://map.naver.com/v5/search/관악산 연주대" target="_blank" class="place-item">⛰️ 관악산 연주대</a>
+            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관 (용산)</a>
+            <a href="https://map.naver.com/v5/search/고창복낙지세상 봉천점" target="_blank" class="place-item">🐙 고창복낙지세상 (관악)</a>
+            <a href="https://map.naver.com/v5/search/관악산 연주대" target="_blank" class="place-item">⛰️ 관악산 연주대 (관악)</a>
             <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
         </div>
     </div>
 
-    <!-- 사다리 타기 / 랜덤 뽑기 -->
+    <div class="section-card">
+        <div class="section-title">🚗 [둘째날] 서울 근교 투어</div>
+        
+        <div class="sub-category-title">경기 광주</div>
+        <div class="place-grid" style="margin-bottom: 10px;">
+            <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
+            <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
+            <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
+        </div>
+
+        <div class="sub-category-title">경기 용인 / 기타 근교</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/용인에버랜드 사파리" target="_blank" class="place-item">🦁 용인 에버랜드 사파리</a>
+            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장 (부천)</a>
+            <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광 (파주)</a>
+        </div>
+    </div>
+
+    <!-- 둘째날 전체 장소 랜덤 뽑기 -->
     <div class="ladder-section">
-        <div class="ladder-title">🎯 "아무거나!" 할 때 누르는 사다리 타기</div>
-        <div class="ladder-desc">16개 장소 중 부모님과 함께 갈 운명의 장소를 뽑아드립니다.</div>
-        <button class="roulette-btn" onclick="runLadder()">운명의 장소 뽑기 🎲</button>
+        <div class="ladder-title">🎯 "어디갈지 고민될 때" 전체 뽑기</div>
+        <div class="ladder-desc">모든 둘째날 후보 장소 중 하나를 무작위로 선택합니다.</div>
+        <button class="roulette-btn" onclick="runLadder()">둘째날 코스 뽑기 🎲</button>
         <div id="resultBox" class="result-box"></div>
     </div>
 </div>
 
 <script>
+    // 첫날 첫 식사 후보
+    const firstMeals = ["🐖 돼지집", "🍚 백승희의들밥"];
+
+    // 둘째날 장소 후보
     const places = [
         "🌿 서울한방진흥센터",
         "🍵 차차티클럽 창신한옥",
@@ -237,23 +286,39 @@
         "🦀 봉순게장",
         "🐙 고창복낙지세상 봉천점",
         "🏛️ 국립중앙박물관",
-        "🐖 돼지집",
         "🕊️ DMZ 평화관광",
-        "⛰️ 관악산 연주대"
+        "⛰️ 관악산 연주대",
+        "🛍️ 동묘 벼룩시장"
     ];
+
+    function pickFirstMeal() {
+        const resultBox = document.getElementById('firstMealResult');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '🎲 첫 식사 장소를 고르는 중입니다...';
+
+        setTimeout(() => {
+            const selected = firstMeals[Math.floor(Math.random() * firstMeals.length)];
+            const cleanName = selected.replace(/^[^\s]+\s/, '');
+            
+            resultBox.innerHTML = `
+                🎉 추천하는 서울 첫 식사 장소: <br>
+                <strong style="font-size:1.2rem; color:#d97724; display:block; margin:8px 0;">${selected}</strong>
+                <a href="https://map.naver.com/v5/search/${encodeURIComponent(cleanName)}" target="_blank" class="map-btn">네이버 지도에서 보기 ↗</a>
+            `;
+        }, 500);
+    }
 
     function runLadder() {
         const resultBox = document.getElementById('resultBox');
         resultBox.style.display = 'block';
-        resultBox.innerHTML = '🎲 사다리를 타는 중입니다...';
+        resultBox.innerHTML = '🎲 둘째날 운명의 장소를 뽑는 중입니다...';
 
         setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * places.length);
-            const selected = places[randomIndex];
-            const cleanName = selected.replace(/^[^\s]+\s/, ''); // 지도 검색용 이름 추출
+            const selected = places[Math.floor(Math.random() * places.length)];
+            const cleanName = selected.replace(/^[^\s]+\s/, '');
             
             resultBox.innerHTML = `
-                🎉 오늘 부모님과 방문할 추천 장소: <br>
+                🎉 추천하는 둘째날 나들이 장소: <br>
                 <strong style="font-size:1.2rem; color:#d97724; display:block; margin:8px 0;">${selected}</strong>
                 <a href="https://map.naver.com/v5/search/${encodeURIComponent(cleanName)}" target="_blank" class="map-btn">네이버 지도에서 보기 ↗</a>
             `;
