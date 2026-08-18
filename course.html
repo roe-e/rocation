@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>남김없이 맞춤형 여행 & 식사 코스</title>
+    <title>부모님 맞춤형 여행 & 식사 코스</title>
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -68,35 +68,33 @@
             font-size: 0.75rem;
         }
 
-        .course-nav {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .nav-btn {
-            flex: 1;
-            padding: 10px;
+        .place-list-box {
+            background: #fff;
             border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-sub);
-            cursor: pointer;
-            transition: all 0.2s ease;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
         }
 
-        .nav-btn.active {
-            background: var(--accent-color);
-            color: #fff;
-            border-color: var(--accent-color);
+        .place-list-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent-hover);
         }
 
-        .timeline {
-            position: relative;
-            padding-left: 20px;
-            border-left: 2px dashed #e3ded5;
+        .place-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .place-item {
+            font-size: 0.8rem;
+            background: #faf6f0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: var(--text-main);
         }
 
         .spot-card {
@@ -105,27 +103,7 @@
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 16px;
-            position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .spot-card::before {
-            content: '';
-            position: absolute;
-            left: -27px;
-            top: 20px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent-color);
-            border: 2px solid var(--bg-color);
-        }
-
-        .spot-time {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin-bottom: 4px;
         }
 
         .spot-title {
@@ -141,21 +119,8 @@
             margin-bottom: 10px;
         }
 
-        .spot-tip {
-            background: #faf6f0;
-            border-radius: 6px;
-            padding: 8px 10px;
-            font-size: 0.78rem;
-            color: #786452;
-        }
-
-        .spot-tip strong {
-            color: var(--accent-color);
-        }
-
         .map-btn {
             display: inline-block;
-            margin-top: 10px;
             padding: 6px 12px;
             background: #f7f3ed;
             color: var(--text-main);
@@ -165,9 +130,8 @@
             font-weight: 600;
         }
 
-        /* 사다리 타기 / 랜덤 뽑기 섹션 */
         .ladder-section {
-            margin-top: 32px;
+            margin-top: 24px;
             background: #fff;
             border: 2px dashed var(--accent-color);
             border-radius: 16px;
@@ -214,16 +178,6 @@
             font-weight: 700;
             color: var(--accent-hover);
             display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hidden {
-            display: none;
         }
     </style>
 </head>
@@ -231,128 +185,83 @@
 
 <div class="container">
     <header>
-        <h1>서울 강북 감성 당일치기 코스</h1>
-        <p>요청하신 제외 구역을 완벽히 배제한 알찬 추천 동선</p>
+        <h1>부모님 맞춤 나들이 & 맛집 목록</h1>
+        <p>엄선된 16개 후보 장소 중 선택해 보세요</p>
         <div class="tag-group">
-            <span class="tag">#강북권역</span>
-            <span class="tag">#부모님취향저격</span>
-            <span class="tag">#사다리타기</span>
+            <span class="tag">#부모님모시고</span>
+            <span class="tag">#나들이&맛집</span>
+            <span class="tag">#아무거나사다리</span>
         </div>
     </header>
 
-    <div class="course-nav">
-        <button class="nav-btn active" onclick="switchCourse('course1', this)">코스 A: 서촌·종로 골목 감성</button>
-        <button class="nav-btn" onclick="switchCourse('course2', this)">코스 B: 성수·서울숲 라이프스타일</button>
-    </div>
-
-    <!-- Course A -->
-    <div id="course1" class="timeline">
-        <div class="spot-card">
-            <div class="spot-time">11:30 AM</div>
-            <div class="spot-title">서촌 통인동 골목 산책 & 점심</div>
-            <div class="spot-desc">경복궁 서쪽 서촌의 아기자기한 골목길을 거닐며 차분한 분위기를 느껴보세요. 고즈넉한 퓨전 한식이나 정갈한 음식을 즐기기 좋습니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 서촌 특유의 나지막한 한옥 골목과 작은 편집숍들을 함께 둘러보세요.</div>
-            <a href="https://map.naver.com/v5/search/서촌맛집" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">02:00 PM</div>
-            <div class="spot-title">경복궁 클래식 카페 or 갤러리</div>
-            <div class="spot-desc">통의동과 보안여관 인근의 감성 카페에서 커피 한 잔의 여유를 즐기거나 소규모 전시를 관람합니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 차분한 대화와 따뜻한 분위기를 선호한다면 서촌의 소담한 카페를 추천합니다.</div>
-            <a href="https://map.naver.com/v5/search/서촌카페" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">05:00 PM</div>
-            <div class="spot-title">광화문·청계천 산책</div>
-            <div class="spot-desc">해 질 녘 탁 트인 광화문 광장을 지나 청계천 물길을 따라 가볍게 걸으며 도심 속 여유를 느낍니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 일몰 직후 조명이 들어오는 청계천 입구 부근이 산책하기 가장 예쁩니다.</div>
-            <a href="https://map.naver.com/v5/search/청계광장" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">07:00 PM</div>
-            <div class="spot-title">종로 다이닝 & 와인/반주</div>
-            <div class="spot-desc">종로/익선동 부근의 분위기 좋은 요리주점이나 내추럴 와인 바에서 정갈한 안주와 함께 하루를 마무리합니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 한옥 구조를 살린 분위기 있는 내추럴 와인 바나 정갈한 요리주점이 많습니다.</div>
-            <a href="https://map.naver.com/v5/search/종로와인바" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-    </div>
-
-    <!-- Course B -->
-    <div id="course2" class="timeline hidden">
-        <div class="spot-card">
-            <div class="spot-time">12:00 PM</div>
-            <div class="spot-title">성수동 팝업 & 브런치</div>
-            <div class="spot-desc">트렌디한 브런치 카페에서 식사 후 성수동 연무장길 일대의 독특한 브랜드 팝업스토어를 둘러봅니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 인기 팝업은 미리 대기를 걸어두면 시간을 효율적으로 쓸 수 있습니다.</div>
-            <a href="https://map.naver.com/v5/search/성수동브런치" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">02:30 PM</div>
-            <div class="spot-title">서울숲 여유로운 산책</div>
-            <div class="spot-desc">도심 속 거대한 녹지공원인 서울숲을 거닐며 계절의 변화와 자연을 느껴봅니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 서울숲 거울연못과 사슴사육장 인근 산책로가 걷기 좋습니다.</div>
-            <a href="https://map.naver.com/v5/search/서울숲" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">05:00 PM</div>
-            <div class="spot-title">성수·뚝섬 디저트 카페</div>
-            <div class="spot-desc">서울숲 아뜰리에 길 주변의 감성 넘치는 로스터리 카페나 디저트 숍에서 쉬어갑니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 베이커리 특화 카페가 많으니 취향에 맞는 디저트를 찾아보세요.</div>
-            <a href="https://map.naver.com/v5/search/서울숲카페" target="_blank" class="map-btn">지도 검색 ↗</a>
-        </div>
-
-        <div class="spot-card">
-            <div class="spot-time">07:00 PM</div>
-            <div class="spot-title">뚝섬 한강공원 야경 & 저녁</div>
-            <div class="spot-desc">한강을 바라보며 시원한 바람과 함께 야경을 즐기거나 성수동 레스토랑에서 저녁 식사를 즐깁니다.</div>
-            <div class="spot-tip"><strong>Tip:</strong> 청담대교 조명이 켜지는 시간대의 한강 야경이 훌륭합니다.</div>
-            <a href="https://map.naver.com/v5/search/뚝섬한강공원" target="_blank" class="map-btn">지도 검색 ↗</a>
+    <!-- 전체 장소 목록 미리보기 -->
+    <div class="place-list-box">
+        <div class="place-list-title">📌 전체 추천 장소 (16곳)</div>
+        <div class="place-grid">
+            <div class="place-item">🌿 서울한방진흥센터</div>
+            <div class="place-item">🍵 차차티클럽 창신한옥</div>
+            <div class="place-item">🍜 일월의제면소 흥인지문</div>
+            <div class="place-item">☕ 다향찻집</div>
+            <div class="place-item">⛪ 천진암성지</div>
+            <div class="place-item">🏔️ 남한산성둘레길</div>
+            <div class="place-item">🦁 용인에버랜드 사파리</div>
+            <div class="place-item">🏛️ 서대문형무소</div>
+            <div class="place-item">♨️ 궁전참숯가마</div>
+            <div class="place-item">🦀 봉순게장</div>
+            <div class="place-item">🐙 고창복낙지세상 봉천점</div>
+            <div class="place-item">🏛️ 국립중앙박물관</div>
+            <div class="place-item">🐖 돼지집</div>
+            <div class="place-item">🕊️ DMZ 평화관광</div>
+            <div class="place-item">⛰️ 관악산 연주대</div>
+            <div class="place-item">💈 헤어사파리</div>
         </div>
     </div>
 
     <!-- 사다리 타기 / 랜덤 뽑기 -->
     <div class="ladder-section">
-        <div class="ladder-title">🎯 "아무거나!" 할 때 누르는 랜덤 뽑기</div>
-        <div class="ladder-desc">부모님이 메뉴 선택을 미루실 때 버튼을 눌러 바로 결정해 보세요.</div>
+        <div class="ladder-title">🎯 "아무거나!" 할 때 누르는 사다리 타기</div>
+        <div class="ladder-desc">16개 장소 중 부모님과 함께 갈 운명의 장소를 뽑아드립니다.</div>
         <button class="roulette-btn" onclick="runLadder()">운명의 장소 뽑기 🎲</button>
         <div id="resultBox" class="result-box"></div>
     </div>
 </div>
 
 <script>
-    function switchCourse(courseId, btnElement) {
-        document.getElementById('course1').classList.add('hidden');
-        document.getElementById('course2').classList.add('hidden');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        
-        document.getElementById(courseId).classList.remove('hidden');
-        btnElement.classList.add('active');
-    }
-
     const places = [
-        "🍲 서촌 고즈넉한 한옥 퓨전 한식당",
-        "☕ 통의동 감성 카페 & 디저트",
-        "🍷 종로 분위기 좋은 전통주/와인 요리주점",
-        "🥗 성수동 연무장길 트렌디 브런치",
-        "🍰 서울숲 아뜰리에길 베이커리 카페",
-        "🍖 성수동 정갈한 숯불구이 / 다이닝"
+        "🌿 서울한방진흥센터",
+        "🍵 차차티클럽 창신한옥",
+        "🍜 일월의제면소 흥인지문",
+        "☕ 다향찻집",
+        "⛪ 천진암성지",
+        "🏔️ 남한산성둘레길",
+        "💈 헤어사파리",
+        "🦁 용인에버랜드 사파리",
+        "🏛️ 서대문형무소",
+        "♨️ 궁전참숯가마",
+        "🦀 봉순게장",
+        "🐙 고창복낙지세상 봉천점",
+        "🏛️ 국립중앙박물관",
+        "🐖 돼지집",
+        "🕊️ DMZ 평화관광",
+        "⛰️ 관악산 연주대"
     ];
 
     function runLadder() {
         const resultBox = document.getElementById('resultBox');
         resultBox.style.display = 'block';
-        resultBox.innerHTML = '🎲 운명의 사다리를 타는 중...';
+        resultBox.innerHTML = '🎲 사다리를 타는 중입니다...';
 
         setTimeout(() => {
             const randomIndex = Math.floor(Math.random() * places.length);
-            resultBox.innerHTML = `🎉 오늘 부모님과 갈 곳: <br><strong style="font-size:1.15rem; color:#d97724;">${places[randomIndex]}</strong>`;
-        }, 600);
+            const selected = places[randomIndex];
+            const cleanName = selected.replace(/^[^\s]+\s/, ''); // 지도 검색용 이름 추출
+            
+            resultBox.innerHTML = `
+                🎉 오늘 부모님과 방문할 추천 장소: <br>
+                <strong style="font-size:1.2rem; color:#d97724; display:block; margin:8px 0;">${selected}</strong>
+                <a href="https://map.naver.com/v5/search/${encodeURIComponent(cleanName)}" target="_blank" class="map-btn">네이버 지도에서 보기 ↗</a>
+            `;
+        }, 500);
     }
 </script>
 
