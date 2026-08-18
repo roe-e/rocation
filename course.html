@@ -266,7 +266,7 @@
     function switchCourse(courseId, btnElement) {
         document.getElementById('course1').classList.add('hidden');
         document.getElementById('course2').classList.add('hidden');
-        
+                                                            
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         
         document.getElementById(courseId).classList.remove('hidden');
