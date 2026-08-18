@@ -228,7 +228,7 @@
     <div class="ladder-section">
         <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
         <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쪄!확쒸이 첫 식사 장소 뽑기 🎲</button>
+        <button class="roulette-btn" onclick="pickFirstMeal()">첫 식사 장소 뽑기 🎲</button>
         <div id="firstMealResult" class="result-box"></div>
     </div>
 
@@ -278,6 +278,11 @@
         <div class="place-grid" style="margin-bottom: 12px;">
             <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
             <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
+        </div>
+
+        <div class="sub-category-title">중구</div>
+        <div class="place-grid" style="margin-bottom: 12px;">
+            <a href="https://map.naver.com/v5/search/한국은행 화폐박물관" target="_blank" class="place-item">🏛️ 한국은행 화폐박물관</a>
         </div>
 
         <div class="sub-category-title">동대문구</div>
@@ -335,6 +340,9 @@
 
     // 2일차 오후 서울 세부 코스
     const seoulTours = [
+        "중구 (한국은행 화폐박물관) & 종로구 투어",
+        "중구 (한국은행 화폐박물관) & 동대문구 투어",
+        "중구 (한국은행 화폐박물관) & 용산구 투어",
         "동대문구 & 서대문구 투어",
         "동대문구 & 용산구 투어",
         "동대문구 & 종로구 투어",
