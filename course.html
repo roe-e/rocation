@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>남김없이 서울 여행 & 맛집 목록</title>
+    <title>(춘)남김(준섭)없이 서울 여행 & 맛집 목록</title>
     
     <!-- 파비콘 설정 -->
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="pavicon.png">
 
     <style>
         :root {
@@ -16,6 +16,7 @@
             --accent-hover: #b85d13;
             --text-main: #2d2b2a;
             --text-sub: #55504b;
+            --text-gray: #888888;
             --border-color: #e6dfd5;
         }
 
@@ -49,8 +50,13 @@
         header h1 {
             font-size: 1.9rem;
             font-weight: 800;
-            color: var(--text-main);
+            color: #000000; /* 기본 남김없이 검정색 */
             margin-bottom: 10px;
+        }
+
+        .gray-text {
+            color: var(--text-gray);
+            font-weight: 600;
         }
 
         header p {
@@ -284,7 +290,7 @@
 
 <div class="container">
     <header>
-        <h1>남김없이 서울 여행 & 맛집 목록</h1>
+        <h1><span class="gray-text">(춘)</span>남김<span class="gray-text">(준섭)</span>없이 서울 여행 & 맛집 목록</h1>
         <p>엄선된 장소 중 일정에 맞게 선택해 보세요</p>
         <div class="tag-group">
             <span class="tag">#남이와 섭이 정성을 다해모심</span>
