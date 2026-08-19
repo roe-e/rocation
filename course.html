@@ -50,7 +50,7 @@
         header h1 {
             font-size: 1.9rem;
             font-weight: 800;
-            color: #000000; /* 기본 남김없이 검정색 */
+            color: #000000;
             margin-bottom: 10px;
         }
 
@@ -275,13 +275,24 @@
 
         .route-guide-box {
             margin-top: 14px;
-            padding: 12px 14px;
+            padding: 14px 16px;
             background: #fff8f0;
             border-left: 4px solid var(--accent-color);
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.95rem;
             color: var(--text-sub);
             font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .tips-box {
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: #f4f8f5;
+            border-left: 4px solid #81b29a;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #2b4c3f;
             line-height: 1.5;
         }
     </style>
@@ -531,217 +542,167 @@
     };
 
     const suburbPlaces = {
-        "경기 시흥/광명": [
+        "시흥/광명": [
+            { name: "구름산산림욕장", cat: "attraction", emoji: "🌲" },
             { name: "궁전참숯가마", cat: "attraction", emoji: "♨️" },
             { name: "봉순게장", cat: "food", emoji: "🦀" },
-            { name: "구름산산림욕장", cat: "attraction", emoji: "🌲" },
             { name: "까치 카페", cat: "cafe", emoji: "☕" }
         ],
-        "경기 용인": [
+        "용인": [
+            { name: "한택식물원", cat: "attraction", emoji: "🌿" },
             { name: "만물도깨비경매장 본점", cat: "attraction", emoji: "👹" },
             { name: "고기리막국수", cat: "food", emoji: "🍜" },
-            { name: "한택식물원", cat: "attraction", emoji: "🌿" },
             { name: "앨리스포레", cat: "cafe", emoji: "☕" }
         ],
-        "경기 광주": [
-            { name: "천진암성지", cat: "attraction", emoji: "⛪" },
+        "광주": [
+            { name: "화담숲", cat: "attraction", emoji: "🍁" },
             { name: "남한산성둘레길", cat: "attraction", emoji: "🏔️" },
-            { name: "다향찻집", cat: "cafe", emoji: "☕" },
+            { name: "천진암성지", cat: "attraction", emoji: "⛪" },
             { name: "퇴촌돌짜장", cat: "food", emoji: "🍳" },
-            { name: "화담숲", cat: "attraction", emoji: "🍁" }
+            { name: "다향찻집", cat: "cafe", emoji: "☕" }
         ],
-        "경기 파주": [
+        "파주": [
             { name: "DMZ 평화관광", cat: "attraction", emoji: "🕊️" },
-            { name: "앤드테라스 파주점", cat: "cafe", emoji: "☕" },
             { name: "뮤지엄헤이", cat: "attraction", emoji: "🖼️" },
             { name: "임진각 수풀누리공원", cat: "attraction", emoji: "🌳" },
-            { name: "카페 포비", cat: "cafe", emoji: "☕" },
-            { name: "오두산막국수 통일동산점", cat: "food", emoji: "🍜" }
+            { name: "오두산막국수 통일동산점", cat: "food", emoji: "🍜" },
+            { name: "앤드테라스 파주점", cat: "cafe", emoji: "☕" },
+            { name: "카페 포비", cat: "cafe", emoji: "☕" }
         ]
     };
 
-    // 2일차 오후 서울 세부 코스 (거리 동선을 고려한 인접/효율 구 조합)
-    const seoulTourPairs = [
-        { label: "종로구 & 중구 투어 (도심 문화 코스)", districts: ["종로구", "중구"] },
-        { label: "종로구 & 동대문구 투어 (동부 한옥/시장 코스)", districts: ["종로구", "동대문구"] },
-        { label: "종로구 & 서대문구 투어 (북서 산책/역사 코스)", districts: ["종로구", "서대문구"] },
-        { label: "중구 & 동대문구 투어 (도심 전통시장 코스)", districts: ["중구", "동대문구"] },
-        { label: "중구 & 용산구 투어 (남산/이태원 감성 코스)", districts: ["중구", "용산구"] },
-        { label: "마포구 & 서대문구 투어 (서부 연남/홍제 코스)", districts: ["마포구", "서대문구"] },
-        { label: "마포구 & 영등포구 투어 (한강/여의도 코스)", districts: ["마포구", "영등포구"] },
-        { label: "서대문구 & 용산구 투어 (서남 도심 코스)", districts: ["서대문구", "용산구"] }
-    ];
-
-    // 2일차 오후 서울 근교 세부 코스 (단일 지역)
-    const suburbRegionKeys = ["경기 시흥/광명", "경기 용인", "경기 광주", "경기 파주"];
-
-    let selectedStep1 = null;
+    let selectedStep1Region = "";
 
     function pickFirstMeal() {
         const picked = firstMeals[Math.floor(Math.random() * firstMeals.length)];
-        const resBox = document.getElementById('firstMealResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = `🎉 추천 첫 식사: <strong>${picked}</strong><br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 네이버 지도에서 위치 확인하기</a>`;
+        const resultDiv = document.getElementById("firstMealResult");
+        resultDiv.style.display = "block";
+        resultDiv.innerHTML = `오늘의 첫 식사는 <strong>[${picked}]</strong> 입니다! 🎉<br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.substring(3))}" target="_blank" class="map-btn">📍 네이버 지도에서 보기</a>`;
     }
 
     function pickMorningHike() {
         const picked = morningHikeOptions[Math.floor(Math.random() * morningHikeOptions.length)];
-        const resBox = document.getElementById('morningHikeResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = `🎉 새벽 등산 결과:<br><strong>${picked}</strong>`;
+        const resultDiv = document.getElementById("morningHikeResult");
+        resultDiv.style.display = "block";
+        resultDiv.innerHTML = `<strong>${picked}</strong>`;
     }
 
     function pickDinner() {
         const picked = dinners[Math.floor(Math.random() * dinners.length)];
-        const resBox = document.getElementById('dinnerResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = `🎉 추천 저녁 식사: <strong>${picked}</strong><br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 네이버 지도에서 위치 확인하기</a>`;
+        const resultDiv = document.getElementById("dinnerResult");
+        resultDiv.style.display = "block";
+        resultDiv.innerHTML = `오늘의 저녁 식사는 <strong>[${picked}]</strong> 입니다! 🎉<br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.substring(3))}" target="_blank" class="map-btn">📍 네이버 지도에서 보기</a>`;
     }
 
     function pickRegionStep1() {
-        const regions = ["🏛️ 서울 시내 투어", "🏞️ 서울 근교 투어"];
-        const picked = regions[Math.floor(Math.random() * regions.length)];
-        selectedStep1 = picked;
+        const regions = ["서울 시내", "서울 근교"];
+        selectedStep1Region = regions[Math.floor(Math.random() * regions.length)];
 
-        const resBox = document.getElementById('regionStep1Result');
-        resBox.style.display = 'block';
-        resBox.innerHTML = `🎉 1단계 결과: <strong>${picked}</strong><br><small style="color: #666; font-weight: normal;">아래 활성화된 2단계 버튼을 눌러 세부 코스를 뽑으세요!</small>`;
+        const resultDiv = document.getElementById("regionStep1Result");
+        resultDiv.style.display = "block";
+        resultDiv.innerHTML = `1단계 당첨 권역: <strong>[${selectedStep1Region}]</strong> 🎉`;
 
-        const seoulBtn = document.getElementById('seoulDetailBtn');
-        const suburbBtn = document.getElementById('suburbDetailBtn');
-        const hintText = document.getElementById('tourDetailHint');
-        
-        document.getElementById('tourDetailResult').style.display = 'none';
+        const seoulBtn = document.getElementById("seoulDetailBtn");
+        const suburbBtn = document.getElementById("suburbDetailBtn");
+        const hintText = document.getElementById("tourDetailHint");
 
-        if (picked.includes("서울 시내")) {
+        if (selectedStep1Region === "서울 시내") {
             seoulBtn.disabled = false;
             suburbBtn.disabled = true;
-            hintText.innerText = "👉 '서울 시내'가 당첨되었습니다! 왼쪽 버튼을 누르세요.";
+            hintText.innerText = "👉 '서울 세부 코스 뽑기' 버튼이 활성화되었습니다!";
         } else {
             seoulBtn.disabled = true;
             suburbBtn.disabled = false;
-            hintText.innerText = "👉 '서울 근교'가 당첨되었습니다! 오른쪽 버튼을 누르세요.";
+            hintText.innerText = "👉 '서울 근교 세부 코스 뽑기' 버튼이 활성화되었습니다!";
         }
+
+        document.getElementById("tourDetailResult").style.display = "none";
     }
 
-    function getCatBadge(cat) {
-        if (cat === 'food') return '<span class="cat-badge" style="background:#e07a5f;">맛집</span>';
-        if (cat === 'cafe') return '<span class="cat-badge" style="background:#81b29a;">카페</span>';
-        return '<span class="cat-badge" style="background:#3d405b;">볼거리/명소</span>';
-    }
-
-    function shuffleArray(array) {
-        return array.slice().sort(() => Math.random() - 0.5);
-    }
-
-    function selectFourPlaces(dataMap, districtList) {
-        let combinedPlaces = [];
-        districtList.forEach(d => {
-            if (dataMap[d]) {
-                combinedPlaces = combinedPlaces.concat(dataMap[d]);
-            }
-        });
-
-        const foodList = shuffleArray(combinedPlaces.filter(p => p.cat === 'food'));
-        const attractionList = shuffleArray(combinedPlaces.filter(p => p.cat === 'attraction'));
-        const cafeList = shuffleArray(combinedPlaces.filter(p => p.cat === 'cafe'));
-
-        const selected = [];
-        if (foodList.length > 0) selected.push(foodList[0]);
-        if (attractionList.length > 0) selected.push(attractionList[0]);
-        if (attractionList.length > 1) selected.push(attractionList[1]);
-        if (cafeList.length > 0) selected.push(cafeList[0]);
-
-        return selected;
+    function generateCategoryBadge(cat) {
+        if (cat === "food") return '<span class="cat-badge" style="background:#e76f51;">식사</span>';
+        if (cat === "cafe") return '<span class="cat-badge" style="background:#2a9d8f;">카페</span>';
+        return '<span class="cat-badge" style="background:#457b9d;">관광지</span>';
     }
 
     function pickSeoulDetail() {
-        const pickedPair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
-        const selectedPlaces = selectFourPlaces(seoulPlaces, pickedPair.districts);
+        const guList = Object.keys(seoulPlaces);
+        const pickedGu = guList[Math.floor(Math.random() * guList.length)];
+        const places = seoulPlaces[pickedGu];
 
-        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[서울] ${pickedPair.label}</strong></div>`;
-        listHtml += `<div class="detail-place-list">`;
+        const resultDiv = document.getElementById("tourDetailResult");
+        resultDiv.style.display = "block";
 
-        selectedPlaces.forEach(p => {
-            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            listHtml += `
-                <a href="${mapUrl}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
-                    <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
-                </a>`;
+        let html = `서울 시내 세부 지역 당첨: <strong>[${pickedGu}]</strong> 🏙️<br>`;
+        html += `<div style="margin-top: 8px; font-size: 1.05rem;">📍 추천 일정 및 추천 장소:</div>`;
+        html += `<div class="detail-place-list">`;
+
+        places.forEach(p => {
+            const searchUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
+            const badge = generateCategoryBadge(p.cat);
+            html += `
+                <a href="${searchUrl}" target="_blank" class="detail-place-item">
+                    <span>${p.emoji} ${p.name}</span>
+                    ${badge}
+                </a>
+            `;
         });
-        listHtml += `</div>`;
 
-        // 자차 이동 동선 가이드 추가 (맛집 1순위 기준)
-        const foodItem = selectedPlaces.find(p => p.cat === 'food');
-        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
-        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
+        html += `</div>`;
+        html += `
+            <div class="route-guide-box">
+                🧭 <strong>${pickedGu} 추천 당일 코스 조합 가이드</strong><br>
+                1️⃣ 식사 장소에서 맛있는 점심 식사<br>
+                2️⃣ 식사 후 원하는 관광지 1~2곳 방문<br>
+                3️⃣ 중간 또는 일정 마무리로 카페 방문 후 휴식
+            </div>
+            <div class="tips-box">
+                💡 <strong>운영시간 팁:</strong> 박물관이나 관공서 조망 공간(서울시청 하늘전망대 등)은 운영시간 및 입장 가능 여부를 미리 확인해 주세요.
+            </div>
+        `;
 
-        if (foodItem) {
-            let guideText = `🚗 <strong>[자차 추천 동선]</strong><br>`;
-            guideText += `1. 🍽️ <strong>${foodItem.name}</strong> (점심 식사 & 주차)<br>`;
-            
-            if (attractionItems.length > 0) {
-                guideText += `2. 🏛️ <strong>${attractionItems[0].name}</strong> (인근 명소 탐방)<br>`;
-            }
-            if (cafeItem) {
-                guideText += `3. ☕ <strong>${cafeItem.name}</strong> (디저트/휴식)<br>`;
-            }
-            if (attractionItems.length > 1) {
-                guideText += `4. 🗼 <strong>${attractionItems[1].name}</strong> (오후 산책/드라이브 코스)<br>`;
-            }
-            guideText += `<small style="color: #777;">* 맛집 인근에 주차 후 주변 볼거리와 카페를 도보/단거리 차편으로 연계하면 이동 지체를 줄일 수 있습니다.</small>`;
-
-            listHtml += `<div class="route-guide-box">${guideText}</div>`;
-        }
-
-        const resBox = document.getElementById('tourDetailResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = listHtml;
+        resultDiv.innerHTML = html;
     }
 
     function pickSuburbDetail() {
-        const pickedRegion = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
-        const selectedPlaces = selectFourPlaces(suburbPlaces, [pickedRegion]);
+        const areaList = Object.keys(suburbPlaces);
+        const pickedArea = areaList[Math.floor(Math.random() * areaList.length)];
+        const places = suburbPlaces[pickedArea];
 
-        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedRegion} 투어</strong></div>`;
-        listHtml += `<div class="detail-place-list">`;
+        const resultDiv = document.getElementById("tourDetailResult");
+        resultDiv.style.display = "block";
 
-        selectedPlaces.forEach(p => {
-            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            listHtml += `
-                <a href="${mapUrl}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
-                    <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
-                </a>`;
+        let html = `서울 근교 세부 지역 당첨: <strong>[경기 ${pickedArea}]</strong> 🚗<br>`;
+        html += `<div style="margin-top: 8px; font-size: 1.05rem;">📍 추천 일정 및 추천 장소 (관광지 2곳, 식사 1곳, 카페 1곳):</div>`;
+        html += `<div class="detail-place-list">`;
+
+        places.forEach(p => {
+            const searchUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
+            const badge = generateCategoryBadge(p.cat);
+            html += `
+                <a href="${searchUrl}" target="_blank" class="detail-place-item">
+                    <span>${p.emoji} ${p.name}</span>
+                    ${badge}
+                </a>
+            `;
         });
-        listHtml += `</div>`;
 
-        // 자차 이동 동선 가이드 추가 (맛집 1순위 기준)
-        const foodItem = selectedPlaces.find(p => p.cat === 'food');
-        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
-        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
+        html += `</div>`;
+        html += `
+            <div class="route-guide-box">
+                🧭 <strong>경기 ${pickedArea} 추천 당일 완벽 동선 (저녁 전까지)</strong><br>
+                1️⃣ <strong>오전 (10:30~12:00):</strong> 첫 번째 관광지 방문<br>
+                2️⃣ <strong>점심 (12:00~13:30):</strong> 지정 식사 장소에서 식사<br>
+                3️⃣ <strong>오후 A (13:30~15:30):</strong> 두 번째 관광지 탐방<br>
+                4️⃣ <strong>오후 B (15:30~17:00):</strong> 추천 카페에서 차 한 잔의 여유<br>
+                5️⃣ <strong>저녁 (17:00~):</strong> 저녁 식사 장소로 이동!
+            </div>
+            <div class="tips-box">
+                💡 <strong>동선 팁:</strong> 근교 코스는 드라이브 이동 시간이 있으므로 식사 예약이나 관광지 운영시간을 미리 확인하시면 편리합니다.
+            </div>
+        `;
 
-        if (foodItem) {
-            let guideText = `🚗 <strong>[자차 추천 동선]</strong><br>`;
-            guideText += `1. 🍽️ <strong>${foodItem.name}</strong> (도착 후 점심 식사 & 전용 주차)<br>`;
-            if (attractionItems.length > 0) {
-                guideText += `2. 🌲 <strong>${attractionItems[0].name}</strong> (인접 관람/산책 명소)<br>`;
-            }
-            if (cafeItem) {
-                guideText += `3. ☕ <strong>${cafeItem.name}</strong> (경치 좋은 카페 휴식)<br>`;
-            }
-            if (attractionItems.length > 1) {
-                guideText += `4. 🏞️ <strong>${attractionItems[1].name}</strong> (귀가 전 드라이브 포인트)<br>`;
-            }
-            guideText += `<small style="color: #777;">* 근교 드라이브 특성상 맛집/대형카페 주차장을 거점으로 활용하면 주차가 수월합니다.</small>`;
-
-            listHtml += `<div class="route-guide-box">${guideText}</div>`;
-        }
-
-        const resBox = document.getElementById('tourDetailResult');
-        resBox.style.display = 'block';
-        resBox.innerHTML = listHtml;
+        resultDiv.innerHTML = html;
     }
 </script>
 
