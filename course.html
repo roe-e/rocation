@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(춘)남김(준섭)없이 서울 여행 & 맛집 목록</title>
-    
-    <!-- 파비콘 설정 -->
-    <link rel="icon" type="image/png" href="pavicon.png">
-
+    <title>맞춤형 여행 코스 및 장소별 특색 팁</title>
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -16,8 +12,9 @@
             --accent-hover: #b85d13;
             --text-main: #2d2b2a;
             --text-sub: #55504b;
-            --text-gray: #888888;
             --border-color: #e6dfd5;
+            --badge-seoul: #3b82f6;
+            --badge-suburb: #10b981;
         }
 
         * {
@@ -33,677 +30,333 @@
             padding: 24px 16px;
             display: flex;
             justify-content: center;
-            font-size: 18px;
             line-height: 1.6;
         }
 
         .container {
             width: 100%;
-            max-width: 640px;
+            max-width: 680px;
         }
 
-        header {
-            margin-bottom: 28px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            color: #000000;
-            margin-bottom: 10px;
-        }
-
-        .gray-text {
-            color: var(--text-gray);
-            font-weight: 600;
-        }
-
-        header p {
-            font-size: 1.15rem;
-            color: var(--text-sub);
-            font-weight: 500;
-        }
-
-        .tag-group {
+        /* 컨트롤 버튼 영역 */
+        .controls {
             display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .tag {
-            background: #f0e8dc;
-            color: var(--text-sub);
-            padding: 6px 14px;
-            border-radius: 16px;
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
 
-        .section-card {
-            background: #fff;
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-seoul {
+            background-color: var(--badge-seoul);
+        }
+
+        .btn-suburb {
+            background-color: var(--badge-suburb);
+        }
+
+        /* 결과 카드리스트 코어 */
+        .route-card {
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 22px;
+            padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            margin-bottom: 16px;
-            color: var(--accent-hover);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .place-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .place-item {
-            font-size: 1.05rem;
-            font-weight: 600;
-            background: #faf4ed;
-            padding: 12px 14px;
-            border-radius: 10px;
-            color: var(--text-main);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
-
-        .place-item:hover {
-            background: #f0e2d0;
-            transform: translateY(-1px);
-        }
-
-        .place-item::after {
-            content: "↗";
-            font-size: 0.95rem;
-            color: var(--text-sub);
-            margin-left: 6px;
-        }
-
-        .ladder-section {
-            background: #fff;
-            border: 3px dashed var(--accent-color);
-            border-radius: 20px;
-            padding: 24px 20px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .ladder-title {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
-
-        .ladder-desc {
-            font-size: 1.05rem;
-            color: var(--text-sub);
-            margin-bottom: 16px;
-        }
-
-        .roulette-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 1.15rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(217, 119, 36, 0.3);
-            transition: transform 0.1s ease, opacity 0.2s ease;
-            margin: 6px;
-        }
-
-        .roulette-btn.sub-btn {
-            background: #e0924e;
-            font-size: 1.05rem;
-            padding: 12px 22px;
-        }
-
-        .roulette-btn:active {
-            transform: scale(0.96);
-        }
-
-        .roulette-btn:disabled {
-            background: #d9d2c6;
-            color: #8a857c;
-            cursor: not-allowed;
-            box-shadow: none;
-            opacity: 0.6;
-            transform: none;
-        }
-
-        .result-box {
-            margin-top: 16px;
-            padding: 16px;
-            background: #fdf8f2;
-            border: 1px solid #f0e2d0;
-            border-radius: 12px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--accent-hover);
-            display: none;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .map-btn {
+        .card-header-tag {
             display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: #f5ece0;
-            color: var(--text-main);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
         }
 
-        .sub-category-title {
-            font-size: 1.1rem;
+        .tag-seoul { background-color: var(--badge-seoul); }
+        .tag-suburb { background-color: var(--badge-suburb); }
+
+        .section-header {
+            font-size: 1.25rem;
             font-weight: 800;
-            color: var(--text-sub);
-            margin: 16px 0 10px 0;
-            padding-left: 8px;
-            border-left: 4px solid var(--accent-color);
-        }
-
-        .btn-group {
+            color: var(--accent-hover);
+            margin-bottom: 12px;
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
         }
 
-        .hint-text {
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            margin-top: 8px;
+        .section-divider {
+            border: none;
+            border-top: 2px dashed var(--border-color);
+            margin: 20px 0;
         }
 
-        .detail-place-list {
+        .info-list {
+            list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            text-align: left;
-            margin-top: 8px;
+            gap: 12px;
         }
 
-        .detail-place-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fff;
-            border: 1px solid #f0e2d0;
-            padding: 10px 14px;
-            border-radius: 10px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 700;
+        .info-item {
             font-size: 1rem;
-        }
-
-        .detail-place-item:hover {
-            background: #fdf0e0;
-        }
-
-        .cat-badge {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: white;
-            background: var(--accent-color);
-            padding: 3px 9px;
+            color: var(--text-main);
+            background: #faf4ed;
+            padding: 12px 16px;
             border-radius: 10px;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-
-        .route-guide-box {
-            margin-top: 14px;
-            padding: 14px 16px;
-            background: #fff8f0;
             border-left: 4px solid var(--accent-color);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            color: var(--text-sub);
-            font-weight: 500;
-            line-height: 1.6;
         }
 
-        .tips-box {
-            margin-top: 10px;
-            padding: 12px 14px;
-            background: #f4f8f5;
-            border-left: 4px solid #81b29a;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #2b4c3f;
-            line-height: 1.5;
+        .info-item strong {
+            color: #000;
+        }
+
+        .arrow {
+            color: var(--accent-color);
+            font-weight: bold;
+            margin: 0 4px;
+        }
+
+        .badge-alt {
+            font-size: 0.75rem;
+            background: #e0924e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1><span class="gray-text">(춘)</span>남김<span class="gray-text">(준섭)</span>없이 서울 여행 & 맛집 목록</h1>
-        <p>엄선된 장소 중 일정에 맞게 선택해 보세요</p>
-        <div class="tag-group">
-            <span class="tag">#남이와 섭이 정성을 다해모심</span>
-            <span class="tag">#나들이&맛집</span>
-            <span class="tag">#단계별뽑기</span>
-        </div>
-    </header>
-
-    <!-- 1일차: 첫 식사 선택 룰렛 -->
-    <div class="ladder-section">
-        <div class="ladder-title">🍚 [첫날] 서울 도착 후 첫 식사 결정하기</div>
-        <div class="ladder-desc">돼지집 vs 백승희의들밥 중 오늘의 첫 끼를 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickFirstMeal()">안되겠으면 빠꾸없쪄~첫 식사 장소 뽑기 🎲</button>
-        <div id="firstMealResult" class="result-box"></div>
+    <!-- 무작위 추출 테스트용 컨트롤 버튼 -->
+    <div class="controls">
+        <button class="btn btn-seoul" onclick="generateSeoulCourse()">🏙️ 서울 세부 코스 (2개 구 연계)</button>
+        <button class="btn btn-suburb" onclick="generateSuburbCourse()">🌲 서울 근교 세부 코스 (무작위 4곳)</button>
     </div>
 
-    <!-- 2일차 아침: 관악산 연주대 새벽 등산 룰렛 -->
-    <div class="ladder-section">
-        <div class="ladder-title">⛰️ [둘째날 아침 특별 코스] 관악산 연주대 새벽 등산</div>
-        <div class="ladder-desc">새벽 등산을 도전할지 말지 운명에 맡겨보세요!</div>
-        <button class="roulette-btn" onclick="pickMorningHike()">등산 여부 뽑기 🎲</button>
-        <div id="morningHikeResult" class="result-box"></div>
-    </div>
-
-    <!-- 2일차 11시부터 오후 코스: 1단계 / 2단계 분리 룰렛 -->
-    <div class="ladder-section">
-        <div class="ladder-title">🚗 [11시부터 오후 코스] 투어 지역 뽑기</div>
-        <div class="ladder-desc">먼저 1단계를 뽑으면, 결과에 맞는 2단계 버튼만 눌러진답니다!</div>
-        
-        <!-- 1단계 버튼 -->
-        <div style="margin-bottom: 12px;">
-            <button class="roulette-btn" onclick="pickRegionStep1()">1단계: 권역 뽑기 (서울 안 vs 서울 근교) 🎲</button>
-        </div>
-        <div id="regionStep1Result" class="result-box"></div>
-
-        <hr style="border: none; border-top: 2px dashed #e6dfd5; margin: 20px 0;">
-
-        <!-- 2단계 분리 버튼들 -->
-        <div class="ladder-desc"><strong>2단계 세부 코스 뽑기</strong></div>
-        <div class="btn-group">
-            <button id="seoulDetailBtn" class="roulette-btn sub-btn" onclick="pickSeoulDetail()" disabled>🗺️ 서울 세부 코스 뽑기 🎲</button>
-            <button id="suburbDetailBtn" class="roulette-btn sub-btn" onclick="pickSuburbDetail()" disabled>🚗 서울 근교 세부 코스 뽑기 🎲</button>
-        </div>
-        <div id="tourDetailHint" class="hint-text">👆 먼저 위에서 1단계 권역을 뽑아주세요</div>
-        <div id="tourDetailResult" class="result-box"></div>
-    </div>
-
-    <!-- 2일차 저녁 식사 룰렛 -->
-    <div class="ladder-section">
-        <div class="ladder-title">🐟 [둘째날 저녁 식사] 맛집 결정하기</div>
-        <div class="ladder-desc">고창복낙지세상 vs 장수촌 풍천장어직판장 중 오늘의 저녁을 뽑아보세요!</div>
-        <button class="roulette-btn" onclick="pickDinner()">저녁 식사 장소 뽑기 🎲</button>
-        <div id="dinnerResult" class="result-box"></div>
-    </div>
-
-    <!-- 지역별 상세 장소 안내 카드 -->
-    <div class="section-card">
-        <div class="section-title">🏛️ 서울 시내 투어 후보 장소</div>
-        
-        <div class="sub-category-title">종로구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
-            <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
-            <a href="https://map.naver.com/v5/search/낙산냉면" target="_blank" class="place-item">🍜 낙산냉면</a>
-            <a href="https://map.naver.com/v5/search/윤동주 문학관" target="_blank" class="place-item">📖 윤동주 문학관</a>
-            <a href="https://map.naver.com/v5/search/동묘 벼룩시장" target="_blank" class="place-item">🛍️ 동묘 벼룩시장</a>
-            <a href="https://map.naver.com/v5/search/아이노가든 키친" target="_blank" class="place-item">🍽️ 아이노가든 키친</a>
-            <a href="https://map.naver.com/v5/search/부암동 7번지 제빵소" target="_blank" class="place-item">🥐 부암동 7번지 제빵소</a>
-            <a href="https://map.naver.com/v5/search/북악 팔각정" target="_blank" class="place-item">🗼 북악 팔각정</a>
-            <a href="https://map.naver.com/v5/search/소울" target="_blank" class="place-item">🍽️ 소울</a>
-            <a href="https://map.naver.com/v5/search/더피아노 카페" target="_blank" class="place-item">☕ 더피아노 카페</a>
-        </div>
-
-        <div class="sub-category-title">중구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/한국은행 화폐박물관" target="_blank" class="place-item">🏛️ 한국은행 화폐박물관</a>
-            <a href="https://map.naver.com/v5/search/윤영밥상" target="_blank" class="place-item">🍚 윤영밥상</a>
-            <a href="https://map.naver.com/v5/search/적당 카페" target="_blank" class="place-item">☕ 적당 카페</a>
-            <a href="https://map.naver.com/v5/search/정동전망대" target="_blank" class="place-item">🌆 정동전망대</a>
-            <a href="https://map.naver.com/v5/search/카페다락" target="_blank" class="place-item">☕ 카페다락</a>
-            <a href="https://map.naver.com/v5/search/세실마루" target="_blank" class="place-item">🏛️ 세실마루</a>
-            <a href="https://map.naver.com/v5/search/서울시청 하늘전망대" target="_blank" class="place-item">🌆 서울시청 하늘전망대</a>
-        </div>
-
-        <div class="sub-category-title">동대문구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
-            <a href="https://map.naver.com/v5/search/경동시장" target="_blank" class="place-item">🏪 경동시장</a>
-            <a href="https://map.naver.com/v5/search/신락원" target="_blank" class="place-item">🥢 신락원</a>
-            <a href="https://map.naver.com/v5/search/커피한약방 청량리점" target="_blank" class="place-item">☕ 커피한약방 청량리점</a>
-        </div>
-
-        <div class="sub-category-title">서대문구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
-            <a href="https://map.naver.com/v5/search/안산자락길" target="_blank" class="place-item">🌲 안산자락길</a>
-            <a href="https://map.naver.com/v5/search/무악동 봉수대" target="_blank" class="place-item">⛰️ 무악동 봉수대</a>
-            <a href="https://map.naver.com/v5/search/어머니와 아들" target="_blank" class="place-item">🍚 어머니와 아들</a>
-            <a href="https://map.naver.com/v5/search/홍제천인공폭포" target="_blank" class="place-item">💦 홍제천인공폭포</a>
-            <a href="https://map.naver.com/v5/search/홍제천 카페폭포" target="_blank" class="place-item">☕ 홍제천 카페폭포</a>
-            <a href="https://map.naver.com/v5/search/고미정 연희본점" target="_blank" class="place-item">🍚 고미정 연희본점</a>
-        </div>
-
-        <div class="sub-category-title">용산구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관</a>
-            <a href="https://map.naver.com/v5/search/해방식당" target="_blank" class="place-item">🍽️ 해방식당</a>
-            <a href="https://map.naver.com/v5/search/해방촌 신흥시장" target="_blank" class="place-item">🛍️ 해방촌 신흥시장</a>
-            <a href="https://map.naver.com/v5/search/카페타자기" target="_blank" class="place-item">☕ 카페타자기</a>
-            <a href="https://map.naver.com/v5/search/케냐키암부커피" target="_blank" class="place-item">☕ 케냐키암부커피</a>
-        </div>
-
-        <div class="sub-category-title">마포구</div>
-        <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/소이연남" target="_blank" class="place-item">🍜 소이연남</a>
-            <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
-            <a href="https://map.naver.com/v5/search/문화비축기지" target="_blank" class="place-item">🏞️ 문화비축기지</a>
-            <a href="https://map.naver.com/v5/search/펄앤콜" target="_blank" class="place-item">🍨 펄앤콜</a>
-        </div>
-
-        <div class="sub-category-title">영등포구</div>
-        <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/63스카이피크닉" target="_blank" class="place-item">🌇 63스카이피크닉</a>
-            <a href="https://map.naver.com/v5/search/난포 63빌딩" target="_blank" class="place-item">🍽️ 난포 63빌딩</a>
-            <a href="https://map.naver.com/v5/search/강변서재" target="_blank" class="place-item">📚 강변서재</a>
-        </div>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title">🏞️ 서울 근교 투어 후보 장소</div>
-        
-        <div class="sub-category-title">경기 시흥/광명</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
-            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장</a>
-            <a href="https://map.naver.com/v5/search/구름산산림욕장" target="_blank" class="place-item">🌲 구름산산림욕장</a>
-            <a href="https://map.naver.com/v5/search/까치 카페" target="_blank" class="place-item">☕ 까치 카페</a>
-        </div>
-
-        <div class="sub-category-title">경기 용인</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/만물도깨비경매장 본점" target="_blank" class="place-item">👹 만물도깨비경매장 본점</a>
-            <a href="https://map.naver.com/v5/search/고기리막국수" target="_blank" class="place-item">🍜 고기리막국수</a>
-            <a href="https://map.naver.com/v5/search/한택식물원" target="_blank" class="place-item">🌿 한택식물원</a>
-            <a href="https://map.naver.com/v5/search/앨리스포레" target="_blank" class="place-item">☕ 앨리스포레</a>
-        </div>
-
-        <div class="sub-category-title">경기 광주</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
-            <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
-            <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
-            <a href="https://map.naver.com/v5/search/퇴촌돌짜장" target="_blank" class="place-item">🍳 퇴촌돌짜장</a>
-            <a href="https://map.naver.com/v5/search/화담숲" target="_blank" class="place-item">🍁 화담숲</a>
-        </div>
-
-        <div class="sub-category-title">경기 파주</div>
-        <div class="place-grid">
-            <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광</a>
-            <a href="https://map.naver.com/v5/search/앤드테라스 파주점" target="_blank" class="place-item">☕ 앤드테라스 파주점</a>
-            <a href="https://map.naver.com/v5/search/뮤지엄헤이" target="_blank" class="place-item">🖼️ 뮤지엄헤이</a>
-            <a href="https://map.naver.com/v5/search/임진각 수풀누리공원" target="_blank" class="place-item">🌳 임진각 수풀누리공원</a>
-            <a href="https://map.naver.com/v5/search/카페 포비" target="_blank" class="place-item">☕ 카페 포비</a>
-            <a href="https://map.naver.com/v5/search/오두산막국수 통일동산점" target="_blank" class="place-item">🍜 오두산막국수 통일동산점</a>
-        </div>
-    </div>
+    <!-- 추천 동선 및 장소별 특색 팁 렌더링 영역 -->
+    <div id="routeResultContainer"></div>
 </div>
 
 <script>
-    // 1일차 첫 식사
-    const firstMeals = ["🐖 돼지집", "🍚 백승희의들밥"];
-
-    // 2일차 아침 등산
-    const morningHikeOptions = [
-        "🏃‍♂️ 관악산 연주대 새벽 등산 진행! (새벽 공기 마시며 상쾌하게 출발)",
-        "😴 관악산 연주대 새벽 등산 패스! (푹 자고 11시 코스부터 쾌적하게 시작)"
-    ];
-
-    // 2일차 저녁 식사
-    const dinners = ["🐙 고창복낙지세상", "🐉 장수촌 풍천장어직판장"];
-
-    // 구/지역별 장소 데이터
-    const seoulPlaces = {
-        "종로구": [
-            { name: "차차티클럽 창신한옥", cat: "cafe", emoji: "🍵" },
-            { name: "일월의제면소 흥인지문", cat: "food", emoji: "🍜" },
-            { name: "낙산냉면", cat: "food", emoji: "🍜" },
-            { name: "윤동주 문학관", cat: "attraction", emoji: "📖" },
-            { name: "동묘 벼룩시장", cat: "attraction", emoji: "🛍️" },
-            { name: "아이노가든 키친", cat: "food", emoji: "🍽️" },
-            { name: "부암동 7번지 제빵소", cat: "cafe", emoji: "🥐" },
-            { name: "북악 팔각정", cat: "attraction", emoji: "🗼" },
-            { name: "소울", cat: "food", emoji: "🍽️" },
-            { name: "더피아노 카페", cat: "cafe", emoji: "☕" }
-        ],
-        "중구": [
-            { name: "한국은행 화폐박물관", cat: "attraction", emoji: "🏛️" },
-            { name: "윤영밥상", cat: "food", emoji: "🍚" },
-            { name: "적당 카페", cat: "cafe", emoji: "☕" },
-            { name: "정동전망대", cat: "attraction", emoji: "🌆" },
-            { name: "카페다락", cat: "cafe", emoji: "☕" },
-            { name: "세실마루", cat: "attraction", emoji: "🏛️" },
-            { name: "서울시청 하늘전망대", cat: "attraction", emoji: "🌆" }
-        ],
-        "동대문구": [
-            { name: "서울한방진흥센터", cat: "attraction", emoji: "🌿" },
-            { name: "경동시장", cat: "attraction", emoji: "🏪" },
-            { name: "신락원", cat: "food", emoji: "🥢" },
-            { name: "커피한약방 청량리점", cat: "cafe", emoji: "☕" }
-        ],
-        "서대문구": [
-            { name: "서대문형무소", cat: "attraction", emoji: "🏛️" },
-            { name: "안산자락길", cat: "attraction", emoji: "🌲" },
-            { name: "무악동 봉수대", cat: "attraction", emoji: "⛰️" },
-            { name: "어머니와 아들", cat: "food", emoji: "🍚" },
-            { name: "홍제천인공폭포", cat: "attraction", emoji: "💦" },
-            { name: "홍제천 카페폭포", cat: "cafe", emoji: "☕" },
-            { name: "고미정 연희본점", cat: "food", emoji: "🍚" }
-        ],
-        "용산구": [
-            { name: "국립중앙박물관", cat: "attraction", emoji: "🏛️" },
-            { name: "해방식당", cat: "food", emoji: "🍽️" },
-            { name: "해방촌 신흥시장", cat: "attraction", emoji: "🛍️" },
-            { name: "카페타자기", cat: "cafe", emoji: "☕" },
-            { name: "케냐키암부커피", cat: "cafe", emoji: "☕" }
-        ],
-        "마포구": [
-            { name: "소이연남", cat: "food", emoji: "🍜" },
-            { name: "헤어사파리", cat: "attraction", emoji: "💈" },
-            { name: "문화비축기지", cat: "attraction", emoji: "🏞️" },
-            { name: "펄앤콜", cat: "cafe", emoji: "🍨" }
-        ],
-        "영등포구": [
-            { name: "63스카이피크닉", cat: "attraction", emoji: "🌇" },
-            { name: "난포 63빌딩", cat: "food", emoji: "🍽️" },
-            { name: "강변서재", cat: "cafe", emoji: "📚" }
-        ]
-    };
-
-    const suburbPlaces = {
-        "시흥/광명": [
-            { name: "구름산산림욕장", cat: "attraction", emoji: "🌲" },
-            { name: "궁전참숯가마", cat: "attraction", emoji: "♨️" },
-            { name: "봉순게장", cat: "food", emoji: "🦀" },
-            { name: "까치 카페", cat: "cafe", emoji: "☕" }
-        ],
-        "용인": [
-            { name: "한택식물원", cat: "attraction", emoji: "🌿" },
-            { name: "만물도깨비경매장 본점", cat: "attraction", emoji: "👹" },
-            { name: "고기리막국수", cat: "food", emoji: "🍜" },
-            { name: "앨리스포레", cat: "cafe", emoji: "☕" }
-        ],
-        "광주": [
-            { name: "화담숲", cat: "attraction", emoji: "🍁" },
-            { name: "남한산성둘레길", cat: "attraction", emoji: "🏔️" },
-            { name: "천진암성지", cat: "attraction", emoji: "⛪" },
-            { name: "퇴촌돌짜장", cat: "food", emoji: "🍳" },
-            { name: "다향찻집", cat: "cafe", emoji: "☕" }
-        ],
-        "파주": [
-            { name: "DMZ 평화관광", cat: "attraction", emoji: "🕊️" },
-            { name: "뮤지엄헤이", cat: "attraction", emoji: "🖼️" },
-            { name: "임진각 수풀누리공원", cat: "attraction", emoji: "🌳" },
-            { name: "오두산막국수 통일동산점", cat: "food", emoji: "🍜" },
-            { name: "앤드테라스 파주점", cat: "cafe", emoji: "☕" },
-            { name: "카페 포비", cat: "cafe", emoji: "☕" }
-        ]
-    };
-
-    let selectedStep1Region = "";
-
-    function pickFirstMeal() {
-        const picked = firstMeals[Math.floor(Math.random() * firstMeals.length)];
-        const resultDiv = document.getElementById("firstMealResult");
-        resultDiv.style.display = "block";
-        resultDiv.innerHTML = `오늘의 첫 식사는 <strong>[${picked}]</strong> 입니다! 🎉<br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.substring(3))}" target="_blank" class="map-btn">📍 네이버 지도에서 보기</a>`;
-    }
-
-    function pickMorningHike() {
-        const picked = morningHikeOptions[Math.floor(Math.random() * morningHikeOptions.length)];
-        const resultDiv = document.getElementById("morningHikeResult");
-        resultDiv.style.display = "block";
-        resultDiv.innerHTML = `<strong>${picked}</strong>`;
-    }
-
-    function pickDinner() {
-        const picked = dinners[Math.floor(Math.random() * dinners.length)];
-        const resultDiv = document.getElementById("dinnerResult");
-        resultDiv.style.display = "block";
-        resultDiv.innerHTML = `오늘의 저녁 식사는 <strong>[${picked}]</strong> 입니다! 🎉<br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.substring(3))}" target="_blank" class="map-btn">📍 네이버 지도에서 보기</a>`;
-    }
-
-    function pickRegionStep1() {
-        const regions = ["서울 시내", "서울 근교"];
-        selectedStep1Region = regions[Math.floor(Math.random() * regions.length)];
-
-        const resultDiv = document.getElementById("regionStep1Result");
-        resultDiv.style.display = "block";
-        resultDiv.innerHTML = `1단계 당첨 권역: <strong>[${selectedStep1Region}]</strong> 🎉`;
-
-        const seoulBtn = document.getElementById("seoulDetailBtn");
-        const suburbBtn = document.getElementById("suburbDetailBtn");
-        const hintText = document.getElementById("tourDetailHint");
-
-        if (selectedStep1Region === "서울 시내") {
-            seoulBtn.disabled = false;
-            suburbBtn.disabled = true;
-            hintText.innerText = "👉 '서울 세부 코스 뽑기' 버튼이 활성화되었습니다!";
-        } else {
-            seoulBtn.disabled = true;
-            suburbBtn.disabled = false;
-            hintText.innerText = "👉 '서울 근교 세부 코스 뽑기' 버튼이 활성화되었습니다!";
+    // ----------------------------------------------------
+    // [데이터베이스] 서울 세부 지역 장소 DB (구 단위)
+    // ----------------------------------------------------
+    const seoulDatabase = {
+        "마포구": {
+            food: [{ name: "마포 진짜원조최대포", tip: "🔥 돼지갈비와 껍데기가 유명한 로컬 맛집. 연기가 자욱할 수 있으니 겉옷은 봉투에 보관하세요." }],
+            attraction: [
+                { name: "망원시장", tip: "🍡 닭강정과 고추튀김 필수! 주말 주차가 매우 협소하니 공영주차장 사전 검색이 필요합니다." },
+                { name: "하늘공원", tip: "🌾 맹꽁이 전동차 대기줄이 길 수 있습니다. 올라갈 땐 계단 walk, 내려올 땐 차 이용을 추천합니다." }
+            ],
+            cafe: [{ name: "앤트러사이트 서교점", tip: "☕ 조용하고 넓은 가든 뷰 카페. 머신이 없어 드립커피 특유의 정갈함을 즐기기 좋습니다." }]
+        },
+        "종로구": {
+            food: [{ name: "토속촌 삼계탕", tip: "🍲 피크타임 웨이팅이 길지만 회전율이 빠릅니다. 견과류 알레르기가 있다면 사전에 확인하세요." }],
+            attraction: [
+                { name: "경복궁", tip: "한복 착용 시 입장료 무료! 휴무일(매주 화요일)을 꼭 확인하고 방문하세요." },
+                { name: "서촌 마을길", tip: "🚶 골목길 산책 중심이므로 편한 신발 착용 필수이며, 주민 거주지이므로 적정 소음 유지가 매너입니다." }
+            ],
+            cafe: [{ name: "대오서점 카페", tip: "📜 서울에서 가장 오래된 서점 공간. 촬영 전 음료 주문 또는 입점료 수칙을 확인해 주세요." }]
+        },
+        "영등포구": {
+            food: [{ name: "엉베흐 (Un Verre)", tip: "🍷 와인과 어울리는 퓨전 요리가 일품. 저녁시간 예약은 필수이며 차분한 분위기를 즐기기 좋습니다." }],
+            attraction: [
+                { name: "여의도 한강공원", tip: "돗자리/텐트 설치 가능 구역과 이용 시간 제한(19시까지)을 지켜주세요." },
+                { name: "영등포 타임스퀘어", tip: "🅿️ 주차 진입 정체가 심하므로 가급적 대중교통이나 주말 부설주차장을 활용하세요." }
+            ],
+            cafe: [{ name: "마호가니 여의도점", tip: "🍰 데이지 크림콜드브루와 파이가 시그니처. 오피스 가에 위치해 주말이 비교적 한산합니다." }]
         }
+    };
 
-        document.getElementById("tourDetailResult").style.display = "none";
+    // ----------------------------------------------------
+    // [데이터베이스] 서울 근교 투어 후보 장소 DB (지역별)
+    // ----------------------------------------------------
+    const suburbDatabase = {
+        "경기 광주": {
+            food: [
+                { name: "퇴촌돌짜장", tip: "🥘 지글거리는 돌판 짜장이 특색! 주말엔 대기가 길어 11:30 이전 캐치테이블/현장 접수를 추천합니다." },
+                { name: "강마을다람쥐", tip: "🐿️ 도토리 요리 전문점. 정원이 예뻐 대기 시간에 한강변 정원 산책하기 좋습니다." }
+            ],
+            attraction: [
+                { name: "화담숲", tip: "🍁 100% 사전 온라인 예약제! 모노레일은 탑승권 회차가 조기 매진되므로 입구에서 먼저 확보하세요." },
+                { name: "남한산성 둘레길", tip: "⛰️ 1코스(수어장대)가 가장 무난하며, 주말 중앙주차장은 오전 일찍 만차됩니다." },
+                { name: "천진암 성지", tip: "🌲 조용하고 고즈넉한 성지. 수목이 우거져 차분하게 산책하기 좋으며 정숙 유지가 필요합니다." }
+            ],
+            cafe: [
+                { name: "다향찻집", tip: "🍵 남한산성 안 고풍스러운 전통찻집. 창가 자리에 앉아 전통차와 한과 세트를 즐겨보세요." },
+                { name: "스멜츠 (Smeltz)", tip: "통유리창으로 보이는 숲뷰가 인스타그래머블! 주차 요원의 안내를 꼭 따라주세요." }
+            ]
+        },
+        "파주": {
+            food: [
+                { name: "삼거리부대찌개", tip: "🥘 쑥갓이 듬뿍 들어간 깊은 국물 맛. 찌개 포장 시 양을 훨씬 넉넉하게 줍니다." },
+                { name: "파주돌짜장", tip: "🥩 매콤한 매운갈비찜과 돌짜장의 조합이 별미. 가족 단위 방문 시 세트 메뉴를 추천합니다." }
+            ],
+            attraction: [
+                { name: "파주 DMZ 생태평화곤돌라", tip: "🚡 민통선 지역을 오가므로 방문객 전원 **신분증 지참 필수**입니다." },
+                { name: "헤이리 예술마을", tip: "🎨 구역이 넓어 차로 이동하거나 이동 동선 동선을 정해두고 걸어 다니는 것이 효율적입니다." },
+                { name: "임진각 평화누리공원", tip: "🎈 바람개비 동산에서 사진 찍기 좋으며 썬크림과 양산을 챙기는 것을 추천합니다." }
+            ],
+            cafe: [
+                { name: "더티트렁크", tip: "🏭 창고형 공장 뷰 콤플렉스 카페. 주말엔 매우 붐비니 주문 전 자리 확보가 우선입니다." },
+                { name: "Red Pipe (레드파이프)", tip: "🥐 루프탑에서 한강 낙조를 감상할 수 있는 대형 베이커리 카페입니다." }
+            ]
+        }
+    };
+
+    // 헬퍼 함수: 배열에서 N개 무작위 추출
+    function getRandomItems(arr, count) {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
     }
 
-    function generateCategoryBadge(cat) {
-        if (cat === "food") return '<span class="cat-badge" style="background:#e76f51;">식사</span>';
-        if (cat === "cafe") return '<span class="cat-badge" style="background:#2a9d8f;">카페</span>';
-        return '<span class="cat-badge" style="background:#457b9d;">관광지</span>';
+    // 헬퍼 함수: 객체 키 중 무작위 1개 추출
+    function getRandomKey(obj) {
+        const keys = Object.keys(obj);
+        return keys[Math.floor(Math.random() * keys.length)];
     }
 
-    function pickSeoulDetail() {
-        const guList = Object.keys(seoulPlaces);
-        const pickedGu = guList[Math.floor(Math.random() * guList.length)];
-        const places = seoulPlaces[pickedGu];
+    // ----------------------------------------------------
+    // 1. 서울 세부 코스 생성 (2개 구 연계)
+    // ----------------------------------------------------
+    function generateSeoulCourse() {
+        const guList = Object.keys(seoulDatabase);
+        const selectedGus = getRandomItems(guList, 2); // 무작위 2개 구 선택
 
-        const resultDiv = document.getElementById("tourDetailResult");
-        resultDiv.style.display = "block";
+        const guA = selectedGus[0];
+        const guB = selectedGus[1];
 
-        let html = `서울 시내 세부 지역 당첨: <strong>[${pickedGu}]</strong> 🏙️<br>`;
-        html += `<div style="margin-top: 8px; font-size: 1.05rem;">📍 추천 일정 및 추천 장소:</div>`;
-        html += `<div class="detail-place-list">`;
+        const placeA1 = getRandomItems(seoulDatabase[guA].attraction, 1)[0];
+        const placeA2 = getRandomItems(seoulDatabase[guA].food, 1)[0];
+        const placeB1 = getRandomItems(seoulDatabase[guB].cafe, 1)[0];
+        const placeB2 = getRandomItems(seoulDatabase[guB].attraction, 1)[0];
 
-        places.forEach(p => {
-            const searchUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            const badge = generateCategoryBadge(p.cat);
+        // 1코스 및 동선 보정 2코스 구성
+        const course1 = [
+            { name: `${placeA1.name} (${guA})`, time: "오전 관광" },
+            { name: `${placeA2.name} (${guA})`, time: "점심 식사" },
+            { name: `${placeB1.name} (${guB})`, time: "카페/티타임" },
+            { name: `${placeB2.name} (${guB})`, time: "오후 산책" }
+        ];
+
+        const course2 = [
+            { name: `${placeA2.name} (${guA})`, time: "아점" },
+            { name: `${placeA1.name} (${guA})`, time: "오후 관광" },
+            { name: `${placeB2.name} (${guB})`, time: "일몰/야경" },
+            { name: `${placeB1.name} (${guB})`, time: "저녁 카페" }
+        ];
+
+        const tips = [placeA1, placeA2, placeB1, placeB2];
+
+        renderHTML(`서울 2개 구 연계 코스 (${guA} & ${guB})`, "tag-seoul", course1, course2, tips);
+    }
+
+    // ----------------------------------------------------
+    // 2. 서울 근교 세부 코스 생성 (음식1 / 관광2 / 카페1 무작위 4곳)
+    // ----------------------------------------------------
+    function generateSuburbCourse() {
+        const region = getRandomKey(suburbDatabase); // 무작위 근교 지역 선택
+        const targetRegionData = suburbDatabase[region];
+
+        // 조건 준수: 음식점 1곳 / 관광지 2곳 / 카페 1곳 무작위 추출
+        const selectedFood = getRandomItems(targetRegionData.food, 1)[0];
+        const selectedAttractions = getRandomItems(targetRegionData.attraction, 2);
+        const selectedCafe = getRandomItems(targetRegionData.cafe, 1)[0];
+
+        // 1코스 (기본 동선: 명소1 -> 식사 -> 카페 -> 명소2)
+        const course1 = [
+            { name: selectedAttractions[0].name, time: "오전 관광" },
+            { name: selectedFood.name, time: "점심 식사" },
+            { name: selectedCafe.name, time: "티타임" },
+            { name: selectedAttractions[1].name, time: "오후 관광" }
+        ];
+
+        // 2코스 (동선 보정 대안: 식사 -> 카페 -> 명소1 -> 명소2)
+        const course2 = [
+            { name: selectedFood.name, time: "아점 식사" },
+            { name: selectedCafe.name, time: "카페 정원 산책" },
+            { name: selectedAttractions[0].name, time: "오후 관광" },
+            { name: selectedAttractions[1].name, time: "늦은 오후" }
+        ];
+
+        const tips = [selectedFood, selectedAttractions[0], selectedCafe, selectedAttractions[1]];
+
+        renderHTML(`서울 근교 투어 (${region})`, "tag-suburb", course1, course2, tips);
+    }
+
+    // ----------------------------------------------------
+    // 3. UI 랜더링 함수
+    // ----------------------------------------------------
+    function renderHTML(title, tagClass, course1, course2, tips) {
+        const container = document.getElementById('routeResultContainer');
+
+        const c1Text = course1.map(c => `${c.name} <small style="color:#777">(${c.time})</small>`).join(' <span class="arrow">➔</span> ');
+        const c2Text = course2.map(c => `${c.name} <small style="color:#777">(${c.time})</small>`).join(' <span class="arrow">➔</span> ');
+
+        let html = `
+            <div class="route-card">
+                <span class="card-header-tag ${tagClass}">${title}</span>
+                
+                <!-- 추천 동선 안내 -->
+                <div class="section-header">💡 [추천 동선]</div>
+                <ul class="info-list">
+                    <li class="info-item">
+                        • <strong>1코스 (추천):</strong> ${c1Text}
+                    </li>
+                    <li class="info-item">
+                        • <strong>2코스 (보정안):</strong> ${c2Text}
+                        <span class="badge-alt">동선보정</span>
+                    </li>
+                </ul>
+
+                <hr class="section-divider">
+
+                <!-- 장소별 특색 맞춤 팁 -->
+                <div class="section-header">📌 [장소별 특색 방문 팁]</div>
+                <ul class="info-list">
+        `;
+
+        tips.forEach(item => {
             html += `
-                <a href="${searchUrl}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name}</span>
-                    ${badge}
-                </a>
+                <li class="info-item">
+                    • <strong>${item.name}:</strong> ${item.tip}
+                </li>
             `;
         });
 
-        html += `</div>`;
         html += `
-            <div class="route-guide-box">
-                🧭 <strong>${pickedGu} 추천 당일 코스 조합 가이드</strong><br>
-                1️⃣ 식사 장소에서 맛있는 점심 식사<br>
-                2️⃣ 식사 후 원하는 관광지 1~2곳 방문<br>
-                3️⃣ 중간 또는 일정 마무리로 카페 방문 후 휴식
-            </div>
-            <div class="tips-box">
-                💡 <strong>운영시간 팁:</strong> 박물관이나 관공서 조망 공간(서울시청 하늘전망대 등)은 운영시간 및 입장 가능 여부를 미리 확인해 주세요.
+                </ul>
             </div>
         `;
 
-        resultDiv.innerHTML = html;
+        container.innerHTML = html;
     }
 
-    function pickSuburbDetail() {
-        const areaList = Object.keys(suburbPlaces);
-        const pickedArea = areaList[Math.floor(Math.random() * areaList.length)];
-        const places = suburbPlaces[pickedArea];
-
-        const resultDiv = document.getElementById("tourDetailResult");
-        resultDiv.style.display = "block";
-
-        let html = `서울 근교 세부 지역 당첨: <strong>[경기 ${pickedArea}]</strong> 🚗<br>`;
-        html += `<div style="margin-top: 8px; font-size: 1.05rem;">📍 추천 일정 및 추천 장소 (관광지 2곳, 식사 1곳, 카페 1곳):</div>`;
-        html += `<div class="detail-place-list">`;
-
-        places.forEach(p => {
-            const searchUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            const badge = generateCategoryBadge(p.cat);
-            html += `
-                <a href="${searchUrl}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name}</span>
-                    ${badge}
-                </a>
-            `;
-        });
-
-        html += `</div>`;
-        html += `
-            <div class="route-guide-box">
-                🧭 <strong>경기 ${pickedArea} 추천 당일 완벽 동선 (저녁 전까지)</strong><br>
-                1️⃣ <strong>오전 (10:30~12:00):</strong> 첫 번째 관광지 방문<br>
-                2️⃣ <strong>점심 (12:00~13:30):</strong> 지정 식사 장소에서 식사<br>
-                3️⃣ <strong>오후 A (13:30~15:30):</strong> 두 번째 관광지 탐방<br>
-                4️⃣ <strong>오후 B (15:30~17:00):</strong> 추천 카페에서 차 한 잔의 여유<br>
-                5️⃣ <strong>저녁 (17:00~):</strong> 저녁 식사 장소로 이동!
-            </div>
-            <div class="tips-box">
-                💡 <strong>동선 팁:</strong> 근교 코스는 드라이브 이동 시간이 있으므로 식사 예약이나 관광지 운영시간을 미리 확인하시면 편리합니다.
-            </div>
-        `;
-
-        resultDiv.innerHTML = html;
-    }
+    // 페이지 진입 시 기본적으로 서울 2개구 코스로 시작 실행
+    window.onload = () => {
+        generateSeoulCourse();
+    };
 </script>
 
 </body>
