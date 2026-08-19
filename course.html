@@ -6,7 +6,7 @@
     <title>남김없이 서울 여행 & 맛집 목록</title>
     
     <!-- 파비콘 설정 -->
-    <link rel="icon" type="image/png" href="pavicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
         :root {
@@ -193,6 +193,7 @@
             color: var(--accent-hover);
             display: none;
             line-height: 1.6;
+            text-align: left;
         }
 
         .map-btn {
@@ -234,7 +235,7 @@
             flex-direction: column;
             gap: 8px;
             text-align: left;
-            margin-top: 4px;
+            margin-top: 8px;
         }
 
         .detail-place-item {
@@ -264,6 +265,18 @@
             border-radius: 10px;
             white-space: nowrap;
             margin-left: 8px;
+        }
+
+        .route-guide-box {
+            margin-top: 14px;
+            padding: 12px 14px;
+            background: #fff8f0;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            font-weight: 500;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -645,6 +658,29 @@
         });
         listHtml += `</div>`;
 
+        // 자차 이동 동선 가이드 추가 (맛집 1순위 기준)
+        const foodItem = selectedPlaces.find(p => p.cat === 'food');
+        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
+        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
+
+        if (foodItem) {
+            let guideText = `🚗 <strong>[자차 추천 동선]</strong><br>`;
+            guideText += `1. 🍽️ <strong>${foodItem.name}</strong> (점심 식사 & 주차)<br>`;
+            
+            if (attractionItems.length > 0) {
+                guideText += `2. 🏛️ <strong>${attractionItems[0].name}</strong> (인근 명소 탐방)<br>`;
+            }
+            if (cafeItem) {
+                guideText += `3. ☕ <strong>${cafeItem.name}</strong> (디저트/휴식)<br>`;
+            }
+            if (attractionItems.length > 1) {
+                guideText += `4. 🗼 <strong>${attractionItems[1].name}</strong> (오후 산책/드라이브 코스)<br>`;
+            }
+            guideText += `<small style="color: #777;">* 맛집 인근에 주차 후 주변 볼거리와 카페를 도보/단거리 차편으로 연계하면 이동 지체를 줄일 수 있습니다.</small>`;
+
+            listHtml += `<div class="route-guide-box">${guideText}</div>`;
+        }
+
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
         resBox.innerHTML = listHtml;
@@ -666,6 +702,28 @@
                 </a>`;
         });
         listHtml += `</div>`;
+
+        // 자차 이동 동선 가이드 추가 (맛집 1순위 기준)
+        const foodItem = selectedPlaces.find(p => p.cat === 'food');
+        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
+        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
+
+        if (foodItem) {
+            let guideText = `🚗 <strong>[자차 추천 동선]</strong><br>`;
+            guideText += `1. 🍽️ <strong>${foodItem.name}</strong> (도착 후 점심 식사 & 전용 주차)<br>`;
+            if (attractionItems.length > 0) {
+                guideText += `2. 🌲 <strong>${attractionItems[0].name}</strong> (인접 관람/산책 명소)<br>`;
+            }
+            if (cafeItem) {
+                guideText += `3. ☕ <strong>${cafeItem.name}</strong> (경치 좋은 카페 휴식)<br>`;
+            }
+            if (attractionItems.length > 1) {
+                guideText += `4. 🏞️ <strong>${attractionItems[1].name}</strong> (귀가 전 드라이브 포인트)<br>`;
+            }
+            guideText += `<small style="color: #777;">* 근교 드라이브 특성상 맛집/대형카페 주차장을 거점으로 활용하면 주차가 수월합니다.</small>`;
+
+            listHtml += `<div class="route-guide-box">${guideText}</div>`;
+        }
 
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
