@@ -665,8 +665,8 @@
         return array.slice().sort(() => Math.random() - 0.5);
     }
 
-    // 중간에 누락되었던 4개 장소 추천 및 UI 생성 함수들을 복구/완성했습니다.
-    function selectFourPlaces(dataMap, districtList) {
+    // 서울 시내와 근교의 동선을 다르게 설정하는 핵심 로직 수정
+    function selectFourPlaces(dataMap, districtList, type) {
         let combinedPlaces = [];
         districtList.forEach(d => {
             if (dataMap[d]) {
@@ -678,13 +678,27 @@
         const attractionList = shuffleArray(combinedPlaces.filter(p => p.cat === 'attraction'));
         const cafeList = shuffleArray(combinedPlaces.filter(p => p.cat === 'cafe'));
 
-        const selected = [];
-        if (foodList.length > 0) selected.push(foodList[0]);
-        if (attractionList.length > 0) selected.push(attractionList[0]);
-        if (attractionList.length > 1) selected.push(attractionList[1]);
-        if (cafeList.length > 0) selected.push(cafeList[0]);
+        let f1 = foodList.length > 0 ? foodList[0] : null;
+        let a1 = attractionList.length > 0 ? attractionList[0] : null;
+        let a2 = attractionList.length > 1 ? attractionList[1] : null;
+        let c1 = cafeList.length > 0 ? cafeList[0] : null;
 
-        // 만약 4개가 채워지지 않았다면 남은 것들 중에서 추가
+        let selected = [];
+        if (type === 'seoul') {
+            // [수정사항] 서울 시내는 명소 -> 맛집 -> 명소 -> 카페 순으로 우선 배치하여 명소가 먼저 나오게 변경
+            if (a1) selected.push(a1);
+            if (f1) selected.push(f1);
+            if (a2) selected.push(a2);
+            if (c1) selected.push(c1);
+        } else {
+            // 서울 근교는 기존처럼 맛집 -> 명소 -> 명소 -> 카페 순
+            if (f1) selected.push(f1);
+            if (a1) selected.push(a1);
+            if (a2) selected.push(a2);
+            if (c1) selected.push(c1);
+        }
+
+        // 부족한 갯수 채우기 로직 (4개가 안될 경우 대비)
         const pool = shuffleArray(combinedPlaces.filter(p => !selected.includes(p)));
         while (selected.length < 4 && pool.length > 0) {
             selected.push(pool.pop());
@@ -693,6 +707,7 @@
         return selected;
     }
 
+    // 끊겼던 HTML 렌더링 함수 복원
     function generatePlaceHTML(places) {
         let html = '<div class="detail-place-list">';
         let step = 1;
@@ -700,7 +715,7 @@
             html += `
             <div class="detail-place-card">
                 <a href="https://map.naver.com/v5/search/${encodeURIComponent(place.name.replace(/^[^\s]+\s/, ''))}" target="_blank" class="detail-place-header">
-                    <span>${step}. ${place.emoji} ${place.name} ${getCatBadge(place.cat)}</span>
+                    <span>${step}코스. ${place.emoji} ${place.name} ${getCatBadge(place.cat)}</span>
                     <span>↗</span>
                 </a>
                 <div class="place-tip-box">${place.tip}</div>
@@ -711,37 +726,35 @@
         return html;
     }
 
+    // 끊겼던 서울 세부 뽑기 함수 복원 및 동선 UI 수정
     function pickSeoulDetail() {
         const pair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
-        const places = selectFourPlaces(seoulPlaces, pair.districts);
+        const places = selectFourPlaces(seoulPlaces, pair.districts, 'seoul');
         
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
         resBox.innerHTML = `
             <div style="text-align:center; font-size:1.2rem; font-weight:800; margin-bottom:10px;">🎉 [서울 시내] ${pair.label} 당첨!</div>
             <div class="route-guide-box">
-                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (순서는 자유롭게 변경 가능)</div>
-                <div class="route-step">식사: ${places.filter(p=>p.cat==='food').map(p=>p.name).join(', ')}</div>
-                <div class="route-step">관광: ${places.filter(p=>p.cat==='attraction').map(p=>p.name).join(', ')}</div>
-                <div class="route-step">카페: ${places.filter(p=>p.cat==='cafe').map(p=>p.name).join(', ')}</div>
+                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (자유롭게 순서 변경 가능)</div>
+                ${places.map((p, idx) => `<div class="route-step">${idx + 1}코스: ${p.emoji} ${p.name}</div>`).join('')}
             </div>
             ${generatePlaceHTML(places)}
         `;
     }
 
+    // 누락되었던 근교 세부 뽑기 함수 추가
     function pickSuburbDetail() {
         const region = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
-        const places = selectFourPlaces(suburbPlaces, [region]);
-        
+        const places = selectFourPlaces(suburbPlaces, [region], 'suburb');
+
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
         resBox.innerHTML = `
             <div style="text-align:center; font-size:1.2rem; font-weight:800; margin-bottom:10px;">🎉 [서울 근교] ${region} 코스 당첨!</div>
             <div class="route-guide-box">
-                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (순서는 자유롭게 변경 가능)</div>
-                <div class="route-step">식사: ${places.filter(p=>p.cat==='food').map(p=>p.name).join(', ')}</div>
-                <div class="route-step">관광: ${places.filter(p=>p.cat==='attraction').map(p=>p.name).join(', ')}</div>
-                <div class="route-step">카페: ${places.filter(p=>p.cat==='cafe').map(p=>p.name).join(', ')}</div>
+                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (자유롭게 순서 변경 가능)</div>
+                ${places.map((p, idx) => `<div class="route-step">${idx + 1}코스: ${p.emoji} ${p.name}</div>`).join('')}
             </div>
             ${generatePlaceHTML(places)}
         `;
