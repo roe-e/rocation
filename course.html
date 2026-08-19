@@ -218,7 +218,7 @@
             font-size: 1.1rem;
             font-weight: 800;
             color: var(--text-sub);
-            margin: 16px 0 10px 0;
+            margin: 24px 0 10px 0;
             padding-left: 8px;
             border-left: 4px solid var(--accent-color);
         }
@@ -376,25 +376,117 @@
         <div id="dinnerResult" class="result-box"></div>
     </div>
 
-    <!-- 지역별 상세 장소 안내 카드 (기존 유지) -->
-    <!-- (이하 UI는 사용자가 제공한 원본과 동일하게 두어 디자인을 해치지 않음) -->
+    <!-- 전체 지역 목록 (서울 시내) -->
     <div class="section-card">
         <div class="section-title">🏛️ 서울 시내 투어 후보 장소</div>
-        <div class="sub-category-title">종로구</div>
-        <div class="place-grid" style="margin-bottom: 12px;">
-            <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽 창신한옥</a>
-            <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소 흥인지문</a>
+        
+        <div class="sub-category-title" style="margin-top: 0;">종로구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/차차티클럽 창신한옥" target="_blank" class="place-item">🍵 차차티클럽</a>
+            <a href="https://map.naver.com/v5/search/일월의제면소 흥인지문" target="_blank" class="place-item">🍜 일월의제면소</a>
             <a href="https://map.naver.com/v5/search/낙산냉면" target="_blank" class="place-item">🍜 낙산냉면</a>
             <a href="https://map.naver.com/v5/search/윤동주 문학관" target="_blank" class="place-item">📖 윤동주 문학관</a>
             <a href="https://map.naver.com/v5/search/동묘 벼룩시장" target="_blank" class="place-item">🛍️ 동묘 벼룩시장</a>
             <a href="https://map.naver.com/v5/search/아이노가든 키친" target="_blank" class="place-item">🍽️ 아이노가든 키친</a>
-            <a href="https://map.naver.com/v5/search/부암동 7번지 제빵소" target="_blank" class="place-item">🥐 부암동 7번지 제빵소</a>
+            <a href="https://map.naver.com/v5/search/부암동 7번지 제빵소" target="_blank" class="place-item">🥐 부암동 제빵소</a>
             <a href="https://map.naver.com/v5/search/북악 팔각정" target="_blank" class="place-item">🗼 북악 팔각정</a>
             <a href="https://map.naver.com/v5/search/소울" target="_blank" class="place-item">🍽️ 소울</a>
             <a href="https://map.naver.com/v5/search/더피아노 카페" target="_blank" class="place-item">☕ 더피아노 카페</a>
         </div>
-        <!-- 중구, 동대문구 등 기존 내용 생략 없이 포함된 것으로 가정 (길이 상 HTML 하드코딩 부분은 그대로 둠) -->
-        <p style="font-size: 0.9rem; color: #888; text-align: center; margin-top: 10px;">* 전체 목록 생략 (원본 유지)</p>
+
+        <div class="sub-category-title">중구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/한국은행 화폐박물관" target="_blank" class="place-item">🏛️ 한국은행 박물관</a>
+            <a href="https://map.naver.com/v5/search/윤영밥상" target="_blank" class="place-item">🍚 윤영밥상</a>
+            <a href="https://map.naver.com/v5/search/적당 카페" target="_blank" class="place-item">☕ 적당 카페</a>
+            <a href="https://map.naver.com/v5/search/정동전망대" target="_blank" class="place-item">🌆 정동전망대</a>
+            <a href="https://map.naver.com/v5/search/카페다락" target="_blank" class="place-item">☕ 카페다락</a>
+            <a href="https://map.naver.com/v5/search/세실마루" target="_blank" class="place-item">🏛️ 세실마루</a>
+            <a href="https://map.naver.com/v5/search/서울시청 하늘전망대" target="_blank" class="place-item">🌆 서울시청 하늘전망대</a>
+        </div>
+
+        <div class="sub-category-title">동대문구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/서울한방진흥센터" target="_blank" class="place-item">🌿 서울한방진흥센터</a>
+            <a href="https://map.naver.com/v5/search/경동시장" target="_blank" class="place-item">🏪 경동시장</a>
+            <a href="https://map.naver.com/v5/search/신락원" target="_blank" class="place-item">🥢 신락원</a>
+            <a href="https://map.naver.com/v5/search/커피한약방 청량리점" target="_blank" class="place-item">☕ 커피한약방</a>
+        </div>
+
+        <div class="sub-category-title">서대문구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/서대문형무소" target="_blank" class="place-item">🏛️ 서대문형무소</a>
+            <a href="https://map.naver.com/v5/search/안산자락길" target="_blank" class="place-item">🌲 안산자락길</a>
+            <a href="https://map.naver.com/v5/search/무악동 봉수대" target="_blank" class="place-item">⛰️ 무악동 봉수대</a>
+            <a href="https://map.naver.com/v5/search/어머니와 아들" target="_blank" class="place-item">🍚 어머니와 아들</a>
+            <a href="https://map.naver.com/v5/search/홍제천인공폭포" target="_blank" class="place-item">💦 홍제천인공폭포</a>
+            <a href="https://map.naver.com/v5/search/홍제천 카페폭포" target="_blank" class="place-item">☕ 카페폭포</a>
+            <a href="https://map.naver.com/v5/search/고미정 연희본점" target="_blank" class="place-item">🍚 고미정 연희본점</a>
+        </div>
+
+        <div class="sub-category-title">용산구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/국립중앙박물관" target="_blank" class="place-item">🏛️ 국립중앙박물관</a>
+            <a href="https://map.naver.com/v5/search/해방식당" target="_blank" class="place-item">🍽️ 해방식당</a>
+            <a href="https://map.naver.com/v5/search/해방촌 신흥시장" target="_blank" class="place-item">🛍️ 신흥시장</a>
+            <a href="https://map.naver.com/v5/search/카페타자기" target="_blank" class="place-item">☕ 카페타자기</a>
+            <a href="https://map.naver.com/v5/search/케냐키암부커피" target="_blank" class="place-item">☕ 케냐키암부커피</a>
+        </div>
+
+        <div class="sub-category-title">마포구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/소이연남" target="_blank" class="place-item">🍜 소이연남</a>
+            <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
+            <a href="https://map.naver.com/v5/search/문화비축기지" target="_blank" class="place-item">🏞️ 문화비축기지</a>
+            <a href="https://map.naver.com/v5/search/펄앤콜" target="_blank" class="place-item">🍨 펄앤콜</a>
+        </div>
+
+        <div class="sub-category-title">영등포구</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/63스카이피크닉" target="_blank" class="place-item">🌇 63스카이피크닉</a>
+            <a href="https://map.naver.com/v5/search/난포 63빌딩" target="_blank" class="place-item">🍽️ 난포 63빌딩</a>
+            <a href="https://map.naver.com/v5/search/강변서재" target="_blank" class="place-item">📚 강변서재</a>
+        </div>
+    </div>
+
+    <!-- 전체 지역 목록 (서울 근교) -->
+    <div class="section-card">
+        <div class="section-title">🚗 서울 근교 투어 후보 장소</div>
+        
+        <div class="sub-category-title" style="margin-top: 0;">경기 시흥/광명</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/궁전참숯가마" target="_blank" class="place-item">♨️ 궁전참숯가마</a>
+            <a href="https://map.naver.com/v5/search/봉순게장" target="_blank" class="place-item">🦀 봉순게장</a>
+            <a href="https://map.naver.com/v5/search/구름산산림욕장" target="_blank" class="place-item">🌲 구름산산림욕장</a>
+            <a href="https://map.naver.com/v5/search/까치 카페" target="_blank" class="place-item">☕ 까치 카페</a>
+        </div>
+
+        <div class="sub-category-title">경기 용인</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/만물도깨비경매장 본점" target="_blank" class="place-item">👹 만물도깨비경매장</a>
+            <a href="https://map.naver.com/v5/search/고기리막국수" target="_blank" class="place-item">🍜 고기리막국수</a>
+            <a href="https://map.naver.com/v5/search/한택식물원" target="_blank" class="place-item">🌿 한택식물원</a>
+            <a href="https://map.naver.com/v5/search/앨리스포레" target="_blank" class="place-item">☕ 앨리스포레</a>
+        </div>
+
+        <div class="sub-category-title">경기 광주</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/천진암성지" target="_blank" class="place-item">⛪ 천진암성지</a>
+            <a href="https://map.naver.com/v5/search/남한산성둘레길" target="_blank" class="place-item">🏔️ 남한산성둘레길</a>
+            <a href="https://map.naver.com/v5/search/다향찻집" target="_blank" class="place-item">☕ 다향찻집</a>
+            <a href="https://map.naver.com/v5/search/퇴촌돌짜장" target="_blank" class="place-item">🍳 퇴촌돌짜장</a>
+            <a href="https://map.naver.com/v5/search/화담숲" target="_blank" class="place-item">🍁 화담숲</a>
+        </div>
+
+        <div class="sub-category-title">경기 파주</div>
+        <div class="place-grid">
+            <a href="https://map.naver.com/v5/search/DMZ 평화관광" target="_blank" class="place-item">🕊️ DMZ 평화관광</a>
+            <a href="https://map.naver.com/v5/search/앤드테라스 파주점" target="_blank" class="place-item">☕ 앤드테라스</a>
+            <a href="https://map.naver.com/v5/search/뮤지엄헤이" target="_blank" class="place-item">🖼️ 뮤지엄헤이</a>
+            <a href="https://map.naver.com/v5/search/임진각 수풀누리공원" target="_blank" class="place-item">🌳 수풀누리공원</a>
+            <a href="https://map.naver.com/v5/search/카페 포비" target="_blank" class="place-item">☕ 카페 포비</a>
+            <a href="https://map.naver.com/v5/search/오두산막국수 통일동산점" target="_blank" class="place-item">🍜 오두산막국수</a>
+        </div>
     </div>
 </div>
 
@@ -494,7 +586,7 @@
             { name: "앤드테라스 파주점", cat: "cafe", emoji: "☕", tip: "압도적인 규모의 식물원 컨셉 카페! 실내라 날씨에 구애받지 않습니다." },
             { name: "뮤지엄헤이", cat: "attraction", emoji: "🖼️", tip: "화려하고 감각적인 미디어아트 전시로 예쁜 사진을 많이 건질 수 있습니다." },
             { name: "임진각 수풀누리공원", cat: "attraction", emoji: "🌳", tip: "평화누리공원 바람개비 언덕에서 예쁜 커플/가족 인생샷을 남겨보세요." },
-            { name: "카페 포비", cat: "cafe", emoji: "☕", 창: "임진각 뷰를 보며 포비 특유의 쫄깃한 베이글과 다양한 크림치즈를 즐겨보세요." },
+            { name: "카페 포비", cat: "cafe", emoji: "☕", tip: "임진각 뷰를 보며 포비 특유의 쫄깃한 베이글과 다양한 크림치즈를 즐겨보세요." },
             { name: "오두산막국수 통일동산점", cat: "food", emoji: "🍜", tip: "파주 나들이를 마무리하며 시원하고 담백하게 입가심하기 좋은 메뉴입니다." }
         ]
     };
@@ -594,14 +686,12 @@
         return selected;
     }
 
-    // 💡 [동선 및 팁 로직 강화] 서울 상세
     function pickSeoulDetail() {
         const pickedPair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
         const selectedPlaces = selectFourPlaces(seoulPlaces, pickedPair.districts);
 
         let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[서울] ${pickedPair.label}</strong></div>`;
         
-        // 1. [추천 동선] 출력
         const foodItem = selectedPlaces.find(p => p.cat === 'food');
         const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
         const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
@@ -618,7 +708,6 @@
             </div>`;
         }
 
-        // 2. [장소별 방문 팁] 리스트 출력
         listHtml += `<div class="detail-place-list" style="margin-top: 20px;">
                         <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">💡 [장소별 방문 팁]</div>`;
 
@@ -640,14 +729,12 @@
         resBox.innerHTML = listHtml;
     }
 
-    // 💡 [동선 및 팁 로직 강화] 근교 상세
     function pickSuburbDetail() {
         const pickedRegion = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
         const selectedPlaces = selectFourPlaces(suburbPlaces, [pickedRegion]);
 
         let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedRegion} 투어</strong></div>`;
         
-        // 1. [추천 동선] 출력
         const foodItem = selectedPlaces.find(p => p.cat === 'food');
         const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
         const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
@@ -664,7 +751,6 @@
             </div>`;
         }
 
-        // 2. [장소별 방문 팁] 리스트 출력
         listHtml += `<div class="detail-place-list" style="margin-top: 20px;">
                         <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">💡 [장소별 방문 팁]</div>`;
 
