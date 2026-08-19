@@ -224,6 +224,43 @@
             color: var(--text-sub);
             margin-top: 8px;
         }
+
+        .detail-place-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            margin-top: 4px;
+        }
+
+        .detail-place-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border: 1px solid #f0e2d0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .detail-place-item:hover {
+            background: #fdf0e0;
+        }
+
+        .cat-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            background: var(--accent-color);
+            padding: 3px 9px;
+            border-radius: 10px;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -374,20 +411,51 @@
         "😴 관악산 연주대 새벽 등산 패스! (푹 자고 11시 코스부터 쾌적하게 시작)"
     ];
 
-    // 2일차 오후 서울 세부 코스
-    const seoulTours = [
-        "중구 (화폐박물관) & 종로구 투어",
-        "중구 (화폐박물관) & 동대문구 투어",
-        "중구 (화폐박물관) & 용산구 투어",
-        "동대문구 & 서대문구 투어",
-        "동대문구 & 용산구 투어",
-        "동대문구 & 종로구 투어",
-        "동대문구 & 마포구 (소이연남/헤어사파리) 투어",
-        "서대문구 (형무소/안산자락길/봉수대) & 용산구 (해방촌) 투어",
-        "서대문구 & 종로구 투어",
-        "서대문구 & 마포구 (소이연남/헤어사파리) 투어",
-        "용산구 (국립중앙박물관/해방촌) & 종로구 투어",
-        "용산구 (국립중앙박물관/해방촌) & 마포구 (소이연남/헤어사파리) 투어"
+    // 구별 장소 데이터 (카테고리: food=음식점, attraction=관광장소, cafe=카페)
+    const seoulPlaces = {
+        "종로구": [
+            { name: "차차티클럽 창신한옥", cat: "cafe", emoji: "🍵" },
+            { name: "일월의제면소 흥인지문", cat: "food", emoji: "🍜" }
+        ],
+        "중구": [
+            { name: "한국은행 화폐박물관", cat: "attraction", emoji: "🏛️" }
+        ],
+        "동대문구": [
+            { name: "서울한방진흥센터", cat: "attraction", emoji: "🌿" },
+            { name: "동묘 벼룩시장", cat: "attraction", emoji: "🛍️" }
+        ],
+        "서대문구": [
+            { name: "서대문형무소", cat: "attraction", emoji: "🏛️" },
+            { name: "안산자락길", cat: "attraction", emoji: "🌲" },
+            { name: "무악동 봉수대", cat: "attraction", emoji: "⛰️" }
+        ],
+        "용산구": [
+            { name: "국립중앙박물관", cat: "attraction", emoji: "🏛️" },
+            { name: "해방식당", cat: "food", emoji: "🍽️" },
+            { name: "해방촌 신흥시장", cat: "attraction", emoji: "🛍️" },
+            { name: "카페타자기", cat: "cafe", emoji: "☕" },
+            { name: "케냐키암부커피", cat: "cafe", emoji: "☕" }
+        ],
+        "마포구": [
+            { name: "소이연남", cat: "food", emoji: "🍜" },
+            { name: "헤어사파리", cat: "attraction", emoji: "💈" }
+        ]
+    };
+
+    // 2일차 오후 서울 세부 코스 (지역 조합)
+    const seoulTourPairs = [
+        { label: "중구 & 종로구 투어", districts: ["중구", "종로구"] },
+        { label: "중구 & 동대문구 투어", districts: ["중구", "동대문구"] },
+        { label: "중구 & 용산구 투어", districts: ["중구", "용산구"] },
+        { label: "동대문구 & 서대문구 투어", districts: ["동대문구", "서대문구"] },
+        { label: "동대문구 & 용산구 투어", districts: ["동대문구", "용산구"] },
+        { label: "동대문구 & 종로구 투어", districts: ["동대문구", "종로구"] },
+        { label: "동대문구 & 마포구 투어", districts: ["동대문구", "마포구"] },
+        { label: "서대문구 & 용산구 투어", districts: ["서대문구", "용산구"] },
+        { label: "서대문구 & 종로구 투어", districts: ["서대문구", "종로구"] },
+        { label: "서대문구 & 마포구 투어", districts: ["서대문구", "마포구"] },
+        { label: "용산구 & 종로구 투어", districts: ["용산구", "종로구"] },
+        { label: "용산구 & 마포구 투어", districts: ["용산구", "마포구"] }
     ];
 
     // 2일차 오후 근교 세부 코스
@@ -400,6 +468,46 @@
 
     // 2일차 저녁 식사 후보
     const dinners = ["🐙 고창복낙지세상", "🐉 장수촌 풍천장어직판장"];
+
+    const catLabel = { food: "음식점", attraction: "관광장소", cafe: "카페" };
+
+    function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    // 선택된 두 구의 장소 풀에서 음식점1 / 관광장소2 / 카페1(총 4곳)을 뽑되,
+    // 해당 카테고리 후보가 부족하면 남은 슬롯을 다른 카테고리로 채워 최대한 4곳을 확보
+    function pickPlacesForDistricts(districts) {
+        const pool = districts.flatMap(d => seoulPlaces[d] || []);
+        const byCat = {
+            food: pool.filter(p => p.cat === "food"),
+            cafe: pool.filter(p => p.cat === "cafe"),
+            attraction: pool.filter(p => p.cat === "attraction")
+        };
+        const want = { food: 1, cafe: 1, attraction: 2 };
+        const picked = [];
+        const usedNames = new Set();
+
+        ["food", "cafe", "attraction"].forEach(cat => {
+            const shuffled = shuffleArray(byCat[cat]);
+            const take = shuffled.slice(0, want[cat]);
+            take.forEach(p => { picked.push(p); usedNames.add(p.name); });
+        });
+
+        const totalTarget = Math.min(4, pool.length);
+        if (picked.length < totalTarget) {
+            const remaining = shuffleArray(pool.filter(p => !usedNames.has(p.name)));
+            const extra = remaining.slice(0, totalTarget - picked.length);
+            extra.forEach(p => { picked.push(p); usedNames.add(p.name); });
+        }
+
+        return shuffleArray(picked);
+    }
 
     function pickFirstMeal() {
         const resultBox = document.getElementById('firstMealResult');
@@ -439,7 +547,6 @@
         resultBox.style.display = 'block';
         resultBox.innerHTML = '🎲 1단계: 권역을 고르는 중입니다...';
 
-        // 2단계 결과와 힌트, 버튼 상태를 초기화
         const detailResultBox = document.getElementById('tourDetailResult');
         const hintBox = document.getElementById('tourDetailHint');
         const seoulBtn = document.getElementById('seoulDetailBtn');
@@ -468,17 +575,27 @@
         }, 500);
     }
 
-    // 2단계 (서울)
+    // 2단계 (서울): 지역 조합을 뽑은 뒤, 그 지역들의 장소 중 음식점1/관광장소2/카페1을 랜덤 선정
     function pickSeoulDetail() {
         const resultBox = document.getElementById('tourDetailResult');
         resultBox.style.display = 'block';
         resultBox.innerHTML = '🎲 서울 안 세부 코스를 고르는 중입니다...';
 
         setTimeout(() => {
-            const tour = seoulTours[Math.floor(Math.random() * seoulTours.length)];
+            const pair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
+            const places = pickPlacesForDistricts(pair.districts);
+
+            const placesHtml = places.map(p => `
+                <a href="https://map.naver.com/v5/search/${encodeURIComponent(p.name)}" target="_blank" class="detail-place-item">
+                    <span>${p.emoji} ${p.name}</span>
+                    <span class="cat-badge">${catLabel[p.cat]}</span>
+                </a>
+            `).join('');
+
             resultBox.innerHTML = `
-                🎉 [서울 안] 운명의 세부 코스: <br>
-                <strong style="font-size:1.35rem; color:#d97724; display:block; margin:10px 0;">🗺️ ${tour}</strong>
+                🎉 [서울 안] 당첨 지역: <br>
+                <strong style="font-size:1.3rem; color:#d97724; display:block; margin:8px 0 14px;">🗺️ ${pair.label}</strong>
+                <div class="detail-place-list">${placesHtml}</div>
             `;
         }, 500);
     }
