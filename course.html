@@ -584,6 +584,16 @@
 
     let step1ResultValue = ""; 
 
+    // 배열에서 무작위 k개 아이템 무작위 추출 함수 (Fisher-Yates 알고리즘 기반)
+    function getRandomSample(arr, count) {
+        let shuffled = arr.slice();
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, count);
+    }
+
     // 1일차 첫 식사
     function pickFirstMeal() {
         const randomIndex = Math.floor(Math.random() * firstMeals.length);
@@ -657,32 +667,51 @@
         return html;
     }
 
-    // 2단계: 서울 세부 코스 뽑기
+    // 2단계: 서울 세부 코스 뽑기 (구 2개 무작위 추출)
     function pickSeoulDetail() {
         const keys = Object.keys(seoulPlaces);
-        const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const places = seoulPlaces[randomKey];
+        // 무작위로 구 2개 선출
+        const selectedKeys = getRandomSample(keys, 2);
         const resDiv = document.getElementById("tourDetailResult");
 
-        const routeKey = `서울 안 - ${randomKey}`;
-        const guideText = routeGuides[routeKey] || "";
+        let htmlContent = `🏛️ <strong>서울 안 세부 코스 당첨!</strong><br>`;
+        htmlContent += `📍 추천 구: <strong style="font-size:1.25rem;">[ ${selectedKeys.join(" & ")} ]</strong><br>`;
+
+        selectedKeys.forEach(district => {
+            const places = seoulPlaces[district];
+            const routeKey = `서울 안 - ${district}`;
+            const guideText = routeGuides[routeKey] || "";
+
+            htmlContent += `
+                <div style="margin-top:14px; font-weight:700; color:var(--accent-hover);">📌 ${district} 추천 장소</div>
+                ${buildPlaceListHtml(places)}
+                ${guideText ? `<div class="route-guide-box">${guideText}</div>` : ""}
+            `;
+        });
 
         resDiv.style.display = "block";
-        resDiv.innerHTML = `
-            🏛️ <strong>서울 안 세부 코스 당첨!</strong><br>
-            📍 추천 구: <strong style="font-size:1.25rem;">[ ${randomKey} ]</strong><br>
-            <div style="margin-top:10px; font-weight:600; color:var(--text-main);">✨ 추천 장소 목록 (클릭 시 지도 연결):</div>
-            ${buildPlaceListHtml(places)}
-            ${guideText ? `<div class="route-guide-box">${guideText}</div>` : ""}
-        `;
+        resDiv.innerHTML = htmlContent;
     }
 
-    // 2단계: 서울 근교 세부 코스 뽑기
+    // 2단계: 서울 근교 세부 코스 뽑기 (음식점1 / 관광장소2 / 카페1 총 4개 무작위 추출)
     function pickSuburbDetail() {
         const keys = Object.keys(suburbPlaces);
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const places = suburbPlaces[randomKey];
+        const allPlaces = suburbPlaces[randomKey];
         const resDiv = document.getElementById("tourDetailResult");
+
+        // 카테고리별 분류
+        const foodList = allPlaces.filter(p => p.cat === "food");
+        const attractionList = allPlaces.filter(p => p.cat === "attraction");
+        const cafeList = allPlaces.filter(p => p.cat === "cafe");
+
+        // 요청된 조건대로 무작위 추출: 음식점1, 관광장소2, 카페1
+        const selectedFood = getRandomSample(foodList, 1);
+        const selectedAttractions = getRandomSample(attractionList, 2);
+        const selectedCafe = getRandomSample(cafeList, 1);
+
+        // 결과 합치기 (총 4개)
+        const finalSelectedPlaces = [...selectedFood, ...selectedAttractions, ...selectedCafe];
 
         const routeKey = `서울 근교 - ${randomKey}`;
         const guideText = routeGuides[routeKey] || "";
@@ -691,8 +720,8 @@
         resDiv.innerHTML = `
             🚗 <strong>서울 근교 세부 코스 당첨!</strong><br>
             📍 추천 지역: <strong style="font-size:1.25rem;">[ ${randomKey} ]</strong><br>
-            <div style="margin-top:10px; font-weight:600; color:var(--text-main);">✨ 추천 장소 목록 (클릭 시 지도 연결):</div>
-            ${buildPlaceListHtml(places)}
+            <div style="margin-top:10px; font-weight:600; color:var(--text-main);">✨ 맞춤 코스 추천 (음식점 1 / 관광 2 / 카페 1):</div>
+            ${buildPlaceListHtml(finalSelectedPlaces)}
             ${guideText ? `<div class="route-guide-box">${guideText}</div>` : ""}
         `;
     }
