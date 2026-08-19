@@ -155,7 +155,7 @@
             font-size: 1.15rem;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(217, 119, 36, 0.3);
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, opacity 0.2s ease;
             margin: 6px;
         }
 
@@ -167,6 +167,15 @@
 
         .roulette-btn:active {
             transform: scale(0.96);
+        }
+
+        .roulette-btn:disabled {
+            background: #d9d2c6;
+            color: #8a857c;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.6;
+            transform: none;
         }
 
         .result-box {
@@ -209,6 +218,12 @@
             gap: 10px;
             flex-wrap: wrap;
         }
+
+        .hint-text {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -243,7 +258,7 @@
     <!-- 2일차 11시부터 오후 코스: 1단계 / 2단계 분리 룰렛 -->
     <div class="ladder-section">
         <div class="ladder-title">🚗 [11시부터 오후 코스] 투어 지역 뽑기</div>
-        <div class="ladder-desc">먼저 1단계를 뽑고, 결과에 맞춰 2단계 세부 코스를 뽑아보세요!</div>
+        <div class="ladder-desc">먼저 1단계를 뽑으면, 결과에 맞는 2단계 버튼만 눌러진답니다!</div>
         
         <!-- 1단계 버튼 -->
         <div style="margin-bottom: 12px;">
@@ -254,11 +269,12 @@
         <hr style="border: none; border-top: 2px dashed #e6dfd5; margin: 20px 0;">
 
         <!-- 2단계 분리 버튼들 -->
-        <div class="ladder-desc"><strong>2단계 세부 코스 뽑기</strong> (원하는 버튼을 직접 눌러도 돼요)</div>
+        <div class="ladder-desc"><strong>2단계 세부 코스 뽑기</strong></div>
         <div class="btn-group">
-            <button class="roulette-btn sub-btn" onclick="pickSeoulDetail()">🗺️ 서울 세부 코스 뽑기 🎲</button>
-            <button class="roulette-btn sub-btn" onclick="pickSuburbDetail()">🚗 서울 근교 세부 코스 뽑기 🎲</button>
+            <button id="seoulDetailBtn" class="roulette-btn sub-btn" onclick="pickSeoulDetail()" disabled>🗺️ 서울 세부 코스 뽑기 🎲</button>
+            <button id="suburbDetailBtn" class="roulette-btn sub-btn" onclick="pickSuburbDetail()" disabled>🚗 서울 근교 세부 코스 뽑기 🎲</button>
         </div>
+        <div id="tourDetailHint" class="hint-text">👆 먼저 위에서 1단계 권역을 뽑아주세요</div>
         <div id="tourDetailResult" class="result-box"></div>
     </div>
 
@@ -423,17 +439,31 @@
         resultBox.style.display = 'block';
         resultBox.innerHTML = '🎲 1단계: 권역을 고르는 중입니다...';
 
+        // 2단계 결과와 힌트, 버튼 상태를 초기화
+        const detailResultBox = document.getElementById('tourDetailResult');
+        const hintBox = document.getElementById('tourDetailHint');
+        const seoulBtn = document.getElementById('seoulDetailBtn');
+        const suburbBtn = document.getElementById('suburbDetailBtn');
+        detailResultBox.style.display = 'none';
+        detailResultBox.innerHTML = '';
+        seoulBtn.disabled = true;
+        suburbBtn.disabled = true;
+
         setTimeout(() => {
             const isSeoul = Math.random() < 0.5;
             const region = isSeoul ? "🏙️ [서울 안 투어]" : "🚗 [서울 근교 투어]";
-            const guideText = isSeoul 
-                ? "➔ 아래의 <strong>'서울 세부 코스 뽑기'</strong> 버튼을 눌러보세요!" 
-                : "➔ 아래의 <strong>'서울 근교 세부 코스 뽑기'</strong> 버튼을 눌러보세요!";
+
+            if (isSeoul) {
+                seoulBtn.disabled = false;
+                hintBox.innerHTML = '👆 아래 <strong>"서울 세부 코스 뽑기"</strong> 버튼을 눌러주세요!';
+            } else {
+                suburbBtn.disabled = false;
+                hintBox.innerHTML = '👆 아래 <strong>"서울 근교 세부 코스 뽑기"</strong> 버튼을 눌러주세요!';
+            }
 
             resultBox.innerHTML = `
                 📍 1단계 결과: <br>
                 <strong style="font-size:1.45rem; color:#d97724; display:block; margin:10px 0;">${region} 당첨!</strong>
-                <span style="font-size:1rem; color:#55504b;">${guideText}</span>
             `;
         }, 500);
     }
