@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>남김없이 서울 여행 & 맛집 목록</title>
+    
+    <!-- 업로드한 회색 고양이 이미지로 파비콘 설정 -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <style>
         :root {
             --bg-color: #fdfbf7;
@@ -440,7 +444,7 @@
         "😴 관악산 연주대 새벽 등산 패스! (푹 자고 11시 코스부터 쾌적하게 시작)"
     ];
 
-    // 구별 장소 데이터 (카테고리: food=음식점, attraction=관광장소, cafe=카페)
+    // 구별 장소 데이터
     const seoulPlaces = {
         "종로구": [
             { name: "차차티클럽 창신한옥", cat: "cafe", emoji: "🍵" },
@@ -493,7 +497,6 @@
         ]
     };
 
-    // 근교 지역별 장소 데이터
     const suburbPlaces = {
         "경기 시흥/광명": [
             { name: "궁전참숯가마", cat: "attraction", emoji: "♨️" },
@@ -524,124 +527,107 @@
     };
 
     // 2일차 저녁 식사
-    const dinnerOptions = ["🐙 고창복낙지세상", "🐍 장수촌 풍천장어직판장"];
+    const dinners = ["🐙 고창복낙지세상", "🐉 장수촌 풍천장어직판장"];
 
-    // 선택된 1단계 권역 저장 변수
-    let currentRegion = "";
+    let selectedStep1 = null;
 
-    function getRandomItem(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    // 1일차 첫 식사
     function pickFirstMeal() {
-        const choice = getRandomItem(firstMeals);
+        const picked = firstMeals[Math.floor(Math.random() * firstMeals.length)];
         const resBox = document.getElementById('firstMealResult');
         resBox.style.display = 'block';
-        resBox.innerHTML = `오늘의 첫 식사 당첨:<br><span style="font-size:1.4rem; color:var(--accent-hover);">${choice}</span><br>
-        <a href="https://map.naver.com/v5/search/${encodeURIComponent(choice.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 지도에서 위치 보기</a>`;
+        resBox.innerHTML = `🎉 추천 첫 식사: <strong>${picked}</strong><br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 네이버 지도에서 위치 확인하기</a>`;
     }
 
-    // 2일차 아침 등산
     function pickMorningHike() {
-        const choice = getRandomItem(morningHikeOptions);
+        const picked = morningHikeOptions[Math.floor(Math.random() * morningHikeOptions.length)];
         const resBox = document.getElementById('morningHikeResult');
         resBox.style.display = 'block';
-        resBox.innerHTML = `결과:<br><span style="font-size:1.2rem; color:var(--accent-hover);">${choice}</span>`;
+        resBox.innerHTML = `🎉 새벽 등산 결과:<br><strong>${picked}</strong>`;
     }
 
-    // 1단계: 권역 뽑기
     function pickRegionStep1() {
-        const regions = ["서울 안", "서울 근교"];
-        currentRegion = getRandomItem(regions);
-        
+        const regions = ["🏛️ 서울 시내 투어", "🏞️ 서울 근교 투어"];
+        const picked = regions[Math.floor(Math.random() * regions.length)];
+        selectedStep1 = picked;
+
         const resBox = document.getElementById('regionStep1Result');
         resBox.style.display = 'block';
-        resBox.innerHTML = `1단계 권역 결과:<br><span style="font-size:1.4rem; color:var(--accent-hover);">[ ${currentRegion} ]</span> (으)로 결정되었습니다!`;
+        resBox.innerHTML = `🎉 1단계 결과: <strong>${picked}</strong><br><small style="color: #666; font-weight: normal;">아래 활성화된 2단계 버튼을 눌러 세부 코스를 뽑으세요!</small>`;
 
         const seoulBtn = document.getElementById('seoulDetailBtn');
         const suburbBtn = document.getElementById('suburbDetailBtn');
-        const hint = document.getElementById('tourDetailHint');
-        const detailRes = document.getElementById('tourDetailResult');
+        const hintText = document.getElementById('tourDetailHint');
         
-        detailRes.style.display = 'none';
+        document.getElementById('tourDetailResult').style.display = 'none';
 
-        if (currentRegion === "서울 안") {
+        if (picked.includes("서울 시내")) {
             seoulBtn.disabled = false;
             suburbBtn.disabled = true;
-            hint.innerHTML = "💡 1단계 결과가 <b>'서울 안'</b>입니다. <b>'서울 세부 코스 뽑기'</b> 버튼을 눌러주세요!";
+            hintText.innerText = "👉 '서울 시내'가 당첨되었습니다! 왼쪽 버튼을 누르세요.";
         } else {
             seoulBtn.disabled = true;
             suburbBtn.disabled = false;
-            hint.innerHTML = "💡 1단계 결과가 <b>'서울 근교'</b>입니다. <b>'서울 근교 세부 코스 뽑기'</b> 버튼을 눌러주세요!";
+            hintText.innerText = "👉 '서울 근교'가 당첨되었습니다! 오른쪽 버튼을 누르세요.";
         }
     }
 
-    // 카테고리 뱃지 변환 함수
-    function getCatBadgeHtml(cat) {
-        if (cat === "food") return `<span class="cat-badge" style="background:#d9534f;">음식점</span>`;
-        if (cat === "cafe") return `<span class="cat-badge" style="background:#f0ad4e;">카페</span>`;
-        if (cat === "attraction") return `<span class="cat-badge" style="background:#5bc0de;">관광/나들이</span>`;
-        return '';
+    function getCatBadge(cat) {
+        if (cat === 'food') return '<span class="cat-badge" style="background:#e07a5f;">맛집</span>';
+        if (cat === 'cafe') return '<span class="cat-badge" style="background:#81b29a;">카페</span>';
+        return '<span class="cat-badge" style="background:#3d405b;">볼거리/명소</span>';
     }
 
-    // 2단계: 서울 세부 코스
     function pickSeoulDetail() {
         const districts = Object.keys(seoulPlaces);
-        const selectedDistrict = getRandomItem(districts);
-        const places = seoulPlaces[selectedDistrict];
+        const pickedDistrict = districts[Math.floor(Math.random() * districts.length)];
+        const places = seoulPlaces[pickedDistrict];
 
-        const resBox = document.getElementById('tourDetailResult');
-        resBox.style.display = 'block';
-
-        let listHtml = `<div style="font-size:1.2rem; margin-bottom:12px;">선택된 서울 구: <strong style="color:var(--accent-hover); font-size:1.3rem;">[ ${selectedDistrict} ]</strong></div>`;
+        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[서울] ${pickedDistrict} 코스</strong></div>`;
         listHtml += `<div class="detail-place-list">`;
 
         places.forEach(p => {
+            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
             listHtml += `
-                <a href="https://map.naver.com/v5/search/${encodeURIComponent(p.name)}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name}</span>
-                    <div>${getCatBadgeHtml(p.cat)}</div>
-                </a>
-            `;
+                <a href="${mapUrl}" target="_blank" class="detail-place-item">
+                    <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
+                    <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
+                </a>`;
         });
-
         listHtml += `</div>`;
+
+        const resBox = document.getElementById('tourDetailResult');
+        resBox.style.display = 'block';
         resBox.innerHTML = listHtml;
     }
 
-    // 2단계: 근교 세부 코스
     function pickSuburbDetail() {
-        const regions = Object.keys(suburbPlaces);
-        const selectedRegion = getRandomItem(regions);
-        const places = suburbPlaces[selectedRegion];
+        const districts = Object.keys(suburbPlaces);
+        const pickedDistrict = districts[Math.floor(Math.random() * districts.length)];
+        const places = suburbPlaces[pickedDistrict];
 
-        const resBox = document.getElementById('tourDetailResult');
-        resBox.style.display = 'block';
-
-        let listHtml = `<div style="font-size:1.2rem; margin-bottom:12px;">선택된 근교 지역: <strong style="color:var(--accent-hover); font-size:1.3rem;">[ ${selectedRegion} ]</strong></div>`;
+        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedDistrict} 코스</strong></div>`;
         listHtml += `<div class="detail-place-list">`;
 
         places.forEach(p => {
+            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
             listHtml += `
-                <a href="https://map.naver.com/v5/search/${encodeURIComponent(p.name)}" target="_blank" class="detail-place-item">
-                    <span>${p.emoji} ${p.name}</span>
-                    <div>${getCatBadgeHtml(p.cat)}</div>
-                </a>
-            `;
+                <a href="${mapUrl}" target="_blank" class="detail-place-item">
+                    <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
+                    <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
+                </a>`;
         });
-
         listHtml += `</div>`;
+
+        const resBox = document.getElementById('tourDetailResult');
+        resBox.style.display = 'block';
         resBox.innerHTML = listHtml;
     }
 
-    // 2일차 저녁
     function pickDinner() {
-        const choice = getRandomItem(dinnerOptions);
+        const picked = dinners[Math.floor(Math.random() * dinners.length)];
         const resBox = document.getElementById('dinnerResult');
         resBox.style.display = 'block';
-        resBox.innerHTML = `오늘 저녁 추천 당첨:<br><span style="font-size:1.4rem; color:var(--accent-hover);">${choice}</span><br>
-        <a href="https://map.naver.com/v5/search/${encodeURIComponent(choice.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 지도에서 위치 보기</a>`;
+        resBox.innerHTML = `🎉 추천 저녁 식사: <strong>${picked}</strong><br><a href="https://map.naver.com/v5/search/${encodeURIComponent(picked.replace(/^[^\s]+\s/, ''))}" target="_blank" class="map-btn">📍 네이버 지도에서 위치 확인하기</a>`;
     }
 </script>
 
