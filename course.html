@@ -345,10 +345,10 @@
         <div id="morningHikeResult" class="result-box"></div>
     </div>
 
-    <!-- 2일차 11시부터 오후 코스: 1단계 / 2단계 분리 룰렛 -->
+    <!-- 2일차 투어 코스: 1단계 / 2단계 분리 룰렛 -->
     <div class="ladder-section">
-        <div class="ladder-title">🚗 [11시부터 오후 코스] 투어 지역 뽑기</div>
-        <div class="ladder-desc">먼저 1단계를 뽑으면, 결과에 맞는 2단계 버튼만 눌러진답니다!</div>
+        <div class="ladder-title">🚗 [본격 투어 코스] 투어 지역 뽑기</div>
+        <div class="ladder-desc">먼저 1단계를 뽑으면, 결과에 맞는 2단계 버튼만 눌러진답니다!<br><span style="color:#d97724; font-weight:bold;">(출발 시간은 위 등산 룰렛 결과에 따라 10시 또는 11시!)</span></div>
         
         <!-- 1단계 버튼 -->
         <div style="margin-bottom: 12px;">
@@ -494,16 +494,16 @@
     // 1일차 첫 식사
     const firstMeals = ["🐖 돼지집", "🍚 백승희의들밥"];
 
-    // 2일차 아침 등산
+    // 2일차 아침 등산 (출발 시간 조건 추가)
     const morningHikeOptions = [
-        "🏃‍♂️ 관악산 연주대 새벽 등산 진행! (새벽 공기 마시며 상쾌하게 출발)",
-        "😴 관악산 연주대 새벽 등산 패스! (푹 자고 11시 코스부터 쾌적하게 시작)"
+        "🏃‍♂️ 관악산 연주대 새벽 등산 당첨! (땀 흘리고 개운하게 11시 출발!)",
+        "😴 관악산 연주대 새벽 등산 패스! (푹 자고 여유롭게 10시 출발!)"
     ];
 
     // 2일차 저녁 식사
     const dinners = ["🐙 고창복낙지세상", "🐉 장수촌 풍천장어직판장"];
 
-    // 💡 [팁 추가] 구/지역별 장소 데이터에 방문 팁(tip) 속성 추가
+    // 지역별 장소 데이터 (팁 포함)
     const seoulPlaces = {
         "종로구": [
             { name: "차차티클럽 창신한옥", cat: "cafe", emoji: "🍵", tip: "채광 좋은 한옥에서 여유로운 다도 체험을 즐겨보세요." },
@@ -665,6 +665,7 @@
         return array.slice().sort(() => Math.random() - 0.5);
     }
 
+    // 중간에 누락되었던 4개 장소 추천 및 UI 생성 함수들을 복구/완성했습니다.
     function selectFourPlaces(dataMap, districtList) {
         let combinedPlaces = [];
         districtList.forEach(d => {
@@ -683,95 +684,68 @@
         if (attractionList.length > 1) selected.push(attractionList[1]);
         if (cafeList.length > 0) selected.push(cafeList[0]);
 
+        // 만약 4개가 채워지지 않았다면 남은 것들 중에서 추가
+        const pool = shuffleArray(combinedPlaces.filter(p => !selected.includes(p)));
+        while (selected.length < 4 && pool.length > 0) {
+            selected.push(pool.pop());
+        }
+
         return selected;
     }
 
-    function pickSeoulDetail() {
-        const pickedPair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
-        const selectedPlaces = selectFourPlaces(seoulPlaces, pickedPair.districts);
-
-        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[서울] ${pickedPair.label}</strong></div>`;
-        
-        const foodItem = selectedPlaces.find(p => p.cat === 'food');
-        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
-        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
-
-        if (foodItem) {
-            listHtml += `
-            <div class="route-guide-box">
-                <div style="font-size: 1.1rem; font-weight: 800; margin-bottom: 8px;">🗺️ [추천 동선]</div>
-                <div class="route-step"><strong>11:00</strong> - 🍽️ <strong>${foodItem.name}</strong>에서 여유로운 점심 (주변 공영/유료 주차장 이용)</div>
-                ${attractionItems.length > 0 ? `<div class="route-step"><strong>13:00</strong> - 🏛️ 식후 <strong>${attractionItems[0].name}</strong> 산책 및 구경</div>` : ''}
-                ${cafeItem ? `<div class="route-step"><strong>15:00</strong> - ☕ <strong>${cafeItem.name}</strong>로 이동해 커피와 디저트 휴식</div>` : ''}
-                ${attractionItems.length > 1 ? `<div class="route-step"><strong>16:30</strong> - 🗼 <strong>${attractionItems[1].name}</strong> 오후 드라이브 및 방문</div>` : ''}
-                <div style="margin-top: 10px; font-size: 0.85rem; color: #777;">* 서울 도심은 주차가 협소하므로 첫 식사 장소 인근에 주차 후 묶어서 이동하면 좋습니다.</div>
+    function generatePlaceHTML(places) {
+        let html = '<div class="detail-place-list">';
+        let step = 1;
+        places.forEach(place => {
+            html += `
+            <div class="detail-place-card">
+                <a href="https://map.naver.com/v5/search/${encodeURIComponent(place.name.replace(/^[^\s]+\s/, ''))}" target="_blank" class="detail-place-header">
+                    <span>${step}. ${place.emoji} ${place.name} ${getCatBadge(place.cat)}</span>
+                    <span>↗</span>
+                </a>
+                <div class="place-tip-box">${place.tip}</div>
             </div>`;
-        }
-
-        listHtml += `<div class="detail-place-list" style="margin-top: 20px;">
-                        <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">💡 [장소별 방문 팁]</div>`;
-
-        selectedPlaces.forEach(p => {
-            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            listHtml += `
-                <div class="detail-place-card">
-                    <a href="${mapUrl}" target="_blank" class="detail-place-header">
-                        <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
-                        <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
-                    </a>
-                    <div class="place-tip-box">${p.tip || "방문 전 영업시간을 꼭 확인하세요!"}</div>
-                </div>`;
+            step++;
         });
-        listHtml += `</div>`;
+        html += '</div>';
+        return html;
+    }
 
+    function pickSeoulDetail() {
+        const pair = seoulTourPairs[Math.floor(Math.random() * seoulTourPairs.length)];
+        const places = selectFourPlaces(seoulPlaces, pair.districts);
+        
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
-        resBox.innerHTML = listHtml;
+        resBox.innerHTML = `
+            <div style="text-align:center; font-size:1.2rem; font-weight:800; margin-bottom:10px;">🎉 [서울 시내] ${pair.label} 당첨!</div>
+            <div class="route-guide-box">
+                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (순서는 자유롭게 변경 가능)</div>
+                <div class="route-step">식사: ${places.filter(p=>p.cat==='food').map(p=>p.name).join(', ')}</div>
+                <div class="route-step">관광: ${places.filter(p=>p.cat==='attraction').map(p=>p.name).join(', ')}</div>
+                <div class="route-step">카페: ${places.filter(p=>p.cat==='cafe').map(p=>p.name).join(', ')}</div>
+            </div>
+            ${generatePlaceHTML(places)}
+        `;
     }
 
     function pickSuburbDetail() {
-        const pickedRegion = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
-        const selectedPlaces = selectFourPlaces(suburbPlaces, [pickedRegion]);
-
-        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedRegion} 투어</strong></div>`;
+        const region = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
+        const places = selectFourPlaces(suburbPlaces, [region]);
         
-        const foodItem = selectedPlaces.find(p => p.cat === 'food');
-        const cafeItem = selectedPlaces.find(p => p.cat === 'cafe');
-        const attractionItems = selectedPlaces.filter(p => p.cat === 'attraction');
-
-        if (foodItem) {
-            listHtml += `
-            <div class="route-guide-box">
-                <div style="font-size: 1.1rem; font-weight: 800; margin-bottom: 8px;">🗺️ [추천 동선]</div>
-                <div class="route-step"><strong>11:30</strong> - 🚗 근교 도착 후 🍽️ <strong>${foodItem.name}</strong> 전용 주차장 주차 및 점심 식사</div>
-                ${attractionItems.length > 0 ? `<div class="route-step"><strong>13:30</strong> - 🌲 <strong>${attractionItems[0].name}</strong> 야외 바람 쐬며 관람/산책</div>` : ''}
-                ${cafeItem ? `<div class="route-step"><strong>15:30</strong> - ☕ <strong>${cafeItem.name}</strong> 대형 카페에서 풍경 보며 휴식</div>` : ''}
-                ${attractionItems.length > 1 ? `<div class="route-step"><strong>17:00</strong> - 🏞️ 귀가 전 <strong>${attractionItems[1].name}</strong> 들러서 노을 드라이브</div>` : ''}
-                <div style="margin-top: 10px; font-size: 0.85rem; color: #777;">* 외곽 나들이는 이동 동선이 기니 맛집/카페의 넓은 주차장을 거점 삼아 여유롭게 움직이세요.</div>
-            </div>`;
-        }
-
-        listHtml += `<div class="detail-place-list" style="margin-top: 20px;">
-                        <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">💡 [장소별 방문 팁]</div>`;
-
-        selectedPlaces.forEach(p => {
-            const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(p.name)}`;
-            listHtml += `
-                <div class="detail-place-card">
-                    <a href="${mapUrl}" target="_blank" class="detail-place-header">
-                        <span>${p.emoji} ${p.name} ${getCatBadge(p.cat)}</span>
-                        <span style="font-size:0.85rem; color:#888;">지도 ↗</span>
-                    </a>
-                    <div class="place-tip-box">${p.tip || "방문 전 영업시간을 꼭 확인하세요!"}</div>
-                </div>`;
-        });
-        listHtml += `</div>`;
-
         const resBox = document.getElementById('tourDetailResult');
         resBox.style.display = 'block';
-        resBox.innerHTML = listHtml;
+        resBox.innerHTML = `
+            <div style="text-align:center; font-size:1.2rem; font-weight:800; margin-bottom:10px;">🎉 [서울 근교] ${region} 코스 당첨!</div>
+            <div class="route-guide-box">
+                <div style="font-weight:700; margin-bottom:8px;">🗺️ 추천 동선 (순서는 자유롭게 변경 가능)</div>
+                <div class="route-step">식사: ${places.filter(p=>p.cat==='food').map(p=>p.name).join(', ')}</div>
+                <div class="route-step">관광: ${places.filter(p=>p.cat==='attraction').map(p=>p.name).join(', ')}</div>
+                <div class="route-step">카페: ${places.filter(p=>p.cat==='cafe').map(p=>p.name).join(', ')}</div>
+            </div>
+            ${generatePlaceHTML(places)}
+        `;
     }
 </script>
-
 </body>
 </html>
