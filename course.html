@@ -214,6 +214,7 @@
             margin: 16px 0 10px 0;
             padding-left: 8px;
             border-left: 4px solid var(--accent-color);
+            text-align: left;
         }
 
         .btn-group {
@@ -312,7 +313,7 @@
         <!-- 2단계 분리 버튼들 -->
         <div class="ladder-desc"><strong>2단계 세부 코스 뽑기</strong></div>
         <div class="btn-group">
-            <button id="seoulDetailBtn" class="roulette-btn sub-btn" onclick="pickSeoulDetail()" disabled>🗺️ 서울 세부 코스 뽑기 🎲</button>
+            <button id="seoulDetailBtn" class="roulette-btn sub-btn" onclick="pickSeoulDetail()" disabled>🗺️ 서울 연계 코스(2개 구) 뽑기 🎲</button>
             <button id="suburbDetailBtn" class="roulette-btn sub-btn" onclick="pickSuburbDetail()" disabled>🚗 서울 근교 세부 코스 뽑기 🎲</button>
         </div>
         <div id="tourDetailHint" class="hint-text">👆 먼저 위에서 1단계 권역을 뽑아주세요</div>
@@ -382,7 +383,7 @@
         </div>
 
         <div class="sub-category-title">마포구</div>
-        <div class="place-grid">
+        <div class="place-grid" style="margin-bottom: 12px;">
             <a href="https://map.naver.com/v5/search/소이연남" target="_blank" class="place-item">🍜 소이연남</a>
             <a href="https://map.naver.com/v5/search/헤어사파리" target="_blank" class="place-item">💈 헤어사파리</a>
             <a href="https://map.naver.com/v5/search/문화비축기지" target="_blank" class="place-item">🏞️ 문화비축기지</a>
@@ -456,84 +457,86 @@
         { name: "장수촌 풍천장어직판장", url: "https://map.naver.com/v5/search/장수촌 풍천장어직판장" }
     ];
 
-    const seoulDetailCourses = [
+    // 각 구별 장소 데이터 모음
+    const districtData = {
+        "종로구": [
+            { name: "차차티클럽 창신한옥", cat: "카페", url: "https://map.naver.com/v5/search/차차티클럽 창신한옥" },
+            { name: "일월의제면소 흥인지문", cat: "식사", url: "https://map.naver.com/v5/search/일월의제면소 흥인지문" },
+            { name: "낙산냉면", cat: "식사", url: "https://map.naver.com/v5/search/낙산냉면" },
+            { name: "윤동주 문학관", cat: "볼거리", url: "https://map.naver.com/v5/search/윤동주 문학관" },
+            { name: "동묘 벼룩시장", cat: "쇼핑", url: "https://map.naver.com/v5/search/동묘 벼룩시장" },
+            { name: "아이노가든 키친", cat: "식사", url: "https://map.naver.com/v5/search/아이노가든 키친" },
+            { name: "부암동 7번지 제빵소", cat: "카페", url: "https://map.naver.com/v5/search/부암동 7번지 제빵소" },
+            { name: "북악 팔각정", cat: "전망/드라이브", url: "https://map.naver.com/v5/search/북악 팔각정" }
+        ],
+        "중구": [
+            { name: "한국은행 화폐박물관", cat: "박물관", url: "https://map.naver.com/v5/search/한국은행 화폐박물관" },
+            { name: "윤영밥상", cat: "식사", url: "https://map.naver.com/v5/search/윤영밥상" },
+            { name: "적당 카페", cat: "카페", url: "https://map.naver.com/v5/search/적당 카페" },
+            { name: "정동전망대", cat: "전망대", url: "https://map.naver.com/v5/search/정동전망대" },
+            { name: "카페다락", cat: "카페", url: "https://map.naver.com/v5/search/카페다락" },
+            { name: "세실마루", cat: "명소", url: "https://map.naver.com/v5/search/세실마루" }
+        ],
+        "동대문구": [
+            { name: "서울한방진흥센터", cat: "체험/명소", url: "https://map.naver.com/v5/search/서울한방진흥센터" },
+            { name: "경동시장", cat: "전통시장", url: "https://map.naver.com/v5/search/경동시장" },
+            { name: "신락원", cat: "식사", url: "https://map.naver.com/v5/search/신락원" },
+            { name: "커피한약방 청량리점", cat: "카페", url: "https://map.naver.com/v5/search/커피한약방 청량리점" }
+        ],
+        "서대문구": [
+            { name: "서대문형무소", cat: "역사관", url: "https://map.naver.com/v5/search/서대문형무소" },
+            { name: "안산자락길", cat: "산책로", url: "https://map.naver.com/v5/search/안산자락길" },
+            { name: "무악동 봉수대", cat: "전망", url: "https://map.naver.com/v5/search/무악동 봉수대" },
+            { name: "어머니와 아들", cat: "식사", url: "https://map.naver.com/v5/search/어머니와 아들" },
+            { name: "홍제천인공폭포", cat: "명소", url: "https://map.naver.com/v5/search/홍제천인공폭포" },
+            { name: "홍제천 카페폭포", cat: "카페", url: "https://map.naver.com/v5/search/홍제천 카페폭포" },
+            { name: "고미정 연희본점", cat: "식사", url: "https://map.naver.com/v5/search/고미정 연희본점" }
+        ],
+        "용산구": [
+            { name: "국립중앙박물관", cat: "박물관", url: "https://map.naver.com/v5/search/국립중앙박물관" },
+            { name: "해방식당", cat: "식사", url: "https://map.naver.com/v5/search/해방식당" },
+            { name: "해방촌 신흥시장", cat: "명소", url: "https://map.naver.com/v5/search/해방촌 신흥시장" },
+            { name: "카페타자기", cat: "카페", url: "https://map.naver.com/v5/search/카페타자기" },
+            { name: "케냐키암부커피", cat: "카페", url: "https://map.naver.com/v5/search/케냐키암부커피" }
+        ],
+        "마포구": [
+            { name: "소이연남", cat: "식사", url: "https://map.naver.com/v5/search/소이연남" },
+            { name: "헤어사파리", cat: "헤어숍", url: "https://map.naver.com/v5/search/헤어사파리" },
+            { name: "문화비축기지", cat: "문화공간", url: "https://map.naver.com/v5/search/문화비축기지" },
+            { name: "펄앤콜", cat: "아이스크림", url: "https://map.naver.com/v5/search/펄앤콜" }
+        ],
+        "영등포구": [
+            { name: "63스카이피크닉", cat: "전망대", url: "https://map.naver.com/v5/search/63스카이피크닉" },
+            { name: "여의도 한강공원", cat: "공원/피크닉", url: "https://map.naver.com/v5/search/여의도 한강공원" }
+        ]
+    };
+
+    // 지리적으로 가까운 2개 구 연계 조합
+    const seoulDetailPairs = [
         {
-            district: "종로구",
-            title: "종로구 감성 탐방 코스",
-            places: [
-                { name: "차차티클럽 창신한옥", cat: "카페", url: "https://map.naver.com/v5/search/차차티클럽 창신한옥" },
-                { name: "일월의제면소 흥인지문", cat: "식사", url: "https://map.naver.com/v5/search/일월의제면소 흥인지문" },
-                { name: "낙산냉면", cat: "식사", url: "https://map.naver.com/v5/search/낙산냉면" },
-                { name: "윤동주 문학관", cat: "볼거리", url: "https://map.naver.com/v5/search/윤동주 문학관" },
-                { name: "동묘 벼룩시장", cat: "쇼핑", url: "https://map.naver.com/v5/search/동묘 벼룩시장" },
-                { name: "아이노가든 키친", cat: "식사", url: "https://map.naver.com/v5/search/아이노가든 키친" },
-                { name: "부암동 7번지 제빵소", cat: "카페", url: "https://map.naver.com/v5/search/부암동 7번지 제빵소" },
-                { name: "북악 팔각정", cat: "전망/드라이브", url: "https://map.naver.com/v5/search/북악 팔각정" }
-            ]
+            title: "종로구 + 중구 (도심 역사·감성 코스)",
+            d1: "종로구",
+            d2: "중구"
         },
         {
-            district: "중구",
-            title: "중구 레트로 & 문화 코스",
-            places: [
-                { name: "한국은행 화폐박물관", cat: "박물관", url: "https://map.naver.com/v5/search/한국은행 화폐박물관" },
-                { name: "윤영밥상", cat: "식사", url: "https://map.naver.com/v5/search/윤영밥상" },
-                { name: "적당 카페", cat: "카페", url: "https://map.naver.com/v5/search/적당 카페" },
-                { name: "정동전망대", cat: "전망대", url: "https://map.naver.com/v5/search/정동전망대" },
-                { name: "카페다락", cat: "카페", url: "https://map.naver.com/v5/search/카페다락" },
-                { name: "세실마루", cat: "명소", url: "https://map.naver.com/v5/search/세실마루" }
-            ]
+            title: "서대문구 + 마포구 (서북권 힐링·맛집 코스)",
+            d1: "서대문구",
+            d2: "마포구"
         },
         {
-            district: "동대문구",
-            title: "동대문구 전통 한방 & 시장 코스",
-            places: [
-                { name: "서울한방진흥센터", cat: "체험/명소", url: "https://map.naver.com/v5/search/서울한방진흥센터" },
-                { name: "경동시장", cat: "전통시장", url: "https://map.naver.com/v5/search/경동시장" },
-                { name: "신락원", cat: "식사", url: "https://map.naver.com/v5/search/신락원" },
-                { name: "커피한약방 청량리점", cat: "카페", url: "https://map.naver.com/v5/search/커피한약방 청량리점" }
-            ]
+            title: "동대문구 + 중구 (동대문·도심 전통 문화 코스)",
+            d1: "동대문구",
+            d2: "중구"
         },
         {
-            district: "서대문구",
-            title: "서대문구 역사 & 힐링 숲길 코스",
-            places: [
-                { name: "서대문형무소", cat: "역사관", url: "https://map.naver.com/v5/search/서대문형무소" },
-                { name: "안산자락길", cat: "산책로", url: "https://map.naver.com/v5/search/안산자락길" },
-                { name: "무악동 봉수대", cat: "전망", url: "https://map.naver.com/v5/search/무악동 봉수대" },
-                { name: "어머니와 아들", cat: "식사", url: "https://map.naver.com/v5/search/어머니와 아들" },
-                { name: "홍제천인공폭포", cat: "명소", url: "https://map.naver.com/v5/search/홍제천인공폭포" },
-                { name: "홍제천 카페폭포", cat: "카페", url: "https://map.naver.com/v5/search/홍제천 카페폭포" },
-                { name: "고미정 연희본점", cat: "식사", url: "https://map.naver.com/v5/search/고미정 연희본점" }
-            ]
+            title: "용산구 + 중구 (남산·해방촌 산책 코스)",
+            d1: "용산구",
+            d2: "중구"
         },
         {
-            district: "용산구",
-            title: "용산구 박물관 & 해방촌 뷰 코스",
-            places: [
-                { name: "국립중앙박물관", cat: "박물관", url: "https://map.naver.com/v5/search/국립중앙박물관" },
-                { name: "해방식당", cat: "식사", url: "https://map.naver.com/v5/search/해방식당" },
-                { name: "해방촌 신흥시장", cat: "명소", url: "https://map.naver.com/v5/search/해방촌 신흥시장" },
-                { name: "카페타자기", cat: "카페", url: "https://map.naver.com/v5/search/카페타자기" },
-                { name: "케냐키암부커피", cat: "카페", url: "https://map.naver.com/v5/search/케냐키암부커피" }
-            ]
-        },
-        {
-            district: "마포구",
-            title: "마포구 맛집 & 미용/문화 코스",
-            places: [
-                { name: "소이연남", cat: "식사", url: "https://map.naver.com/v5/search/소이연남" },
-                { name: "헤어사파리", cat: "헤어숍", url: "https://map.naver.com/v5/search/헤어사파리" },
-                { name: "문화비축기지", cat: "문화공간", url: "https://map.naver.com/v5/search/문화비축기지" },
-                { name: "펄앤콜", cat: "아이스크림", url: "https://map.naver.com/v5/search/펄앤콜" }
-            ]
-        },
-        {
-            district: "영등포구",
-            title: "영등포구 스카이뷰 & 한강 피크닉 코스",
-            places: [
-                { name: "63스카이피크닉", cat: "전망대", url: "https://map.naver.com/v5/search/63스카이피크닉" },
-                { name: "여의도 한강공원", cat: "공원/피크닉", url: "https://map.naver.com/v5/search/여의도 한강공원" }
-            ]
+            title: "영등포구 + 마포구 (한강·여의도 나들이 코스)",
+            d1: "영등포구",
+            d2: "마포구"
         }
     ];
 
@@ -664,10 +667,10 @@
             const isSeoul = Math.random() < 0.5;
             if (isSeoul) {
                 selectedRegion = "SEOUL";
-                step1Box.innerHTML = `🎉 1단계 결과: <strong>[서울 안]</strong> 당첨! 🏙️<br><small style="color:var(--text-sub);">아래 '서울 세부 코스 뽑기' 버튼이 활성화되었습니다!</small>`;
+                step1Box.innerHTML = `🎉 1단계 결과: <strong>[서울 안]</strong> 당첨! 🏙️<br><small style="color:var(--text-sub);">아래 '서울 연계 코스(2개 구) 뽑기' 버튼이 활성화되었습니다!</small>`;
                 seoulBtn.disabled = false;
                 suburbBtn.disabled = true;
-                hintText.innerText = "👇 '서울 세부 코스 뽑기' 버튼을 눌러주세요!";
+                hintText.innerText = "👇 '서울 연계 코스(2개 구) 뽑기' 버튼을 눌러주세요!";
             } else {
                 selectedRegion = "SUBURB";
                 step1Box.innerHTML = `🎉 1단계 결과: <strong>[서울 근교]</strong> 당첨! 🚗<br><small style="color:var(--text-sub);">아래 '서울 근교 세부 코스 뽑기' 버튼이 활성화되었습니다!</small>`;
@@ -678,16 +681,28 @@
         }, 800);
     }
 
-    // Step 2: 서울 세부
+    // Step 2: 서울 세부 (2개 구 연계)
     function pickSeoulDetail() {
         if (selectedRegion !== "SEOUL") return;
         const resBox = document.getElementById("tourDetailResult");
         resBox.style.display = "block";
-        resBox.innerHTML = "🎲 서울 시내 지역 코스를 결정하는 중...";
+        resBox.innerHTML = "🎲 서울 인접 구 연계 코스를 결정하는 중...";
 
         setTimeout(() => {
-            const picked = getRandomItem(seoulDetailCourses);
-            let placesHtml = picked.places.map(p => `
+            const pickedPair = getRandomItem(seoulDetailPairs);
+            
+            // 두 구의 장소 합치기
+            const d1Places = districtData[pickedPair.d1] || [];
+            const d2Places = districtData[pickedPair.d2] || [];
+
+            let d1Html = d1Places.map(p => `
+                <a href="${p.url}" target="_blank" class="detail-place-item">
+                    <span>📍 ${p.name}</span>
+                    <span class="cat-badge">${p.cat}</span>
+                </a>
+            `).join("");
+
+            let d2Html = d2Places.map(p => `
                 <a href="${p.url}" target="_blank" class="detail-place-item">
                     <span>📍 ${p.name}</span>
                     <span class="cat-badge">${p.cat}</span>
@@ -695,11 +710,14 @@
             `).join("");
 
             resBox.innerHTML = `
-                🏛️ 당첨 지역: <strong>[${picked.district} - ${picked.title}]</strong><br>
-                <div style="font-size: 0.95rem; color: var(--text-sub); margin: 8px 0 12px 0;">아래 추천 장소 중 마음에 드는 곳을 선택해 방문해 보세요!</div>
-                <div class="detail-place-list">
-                    ${placesHtml}
-                </div>
+                🏛️ 당첨 코스: <strong>[${pickedPair.title}]</strong><br>
+                <div style="font-size: 0.95rem; color: var(--text-sub); margin: 8px 0 12px 0;">이동 동선에 맞춘 2개 구의 추천 장소입니다!</div>
+                
+                <div class="sub-category-title">📌 ${pickedPair.d1}</div>
+                <div class="detail-place-list">${d1Html}</div>
+
+                <div class="sub-category-title" style="margin-top: 16px;">📌 ${pickedPair.d2}</div>
+                <div class="detail-place-list">${d2Html}</div>
             `;
         }, 800);
     }
