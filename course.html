@@ -529,7 +529,7 @@
         ]
     };
 
-    // 2일차 오후 서울 세부 코스 (지역 조합)
+    // 2일차 오후 서울 세부 코스 (지역 조합 - 구 2개)
     const seoulTourPairs = [
         { label: "중구 & 종로구 투어", districts: ["중구", "종로구"] },
         { label: "중구 & 동대문구 투어", districts: ["중구", "동대문구"] },
@@ -546,15 +546,8 @@
         { label: "마포구 & 영등포구 투어", districts: ["마포구", "영등포구"] }
     ];
 
-    // 2일차 오후 서울 근교 세부 코스 (지역 조합)
-    const suburbTourPairs = [
-        { label: "시흥/광명 & 용인 투어", districts: ["경기 시흥/광명", "경기 용인"] },
-        { label: "시흥/광명 & 광주 투어", districts: ["경기 시흥/광명", "경기 광주"] },
-        { label: "시흥/광명 & 파주 투어", districts: ["경기 시흥/광명", "경기 파주"] },
-        { label: "용인 & 광주 투어", districts: ["경기 용인", "경기 광주"] },
-        { label: "용인 & 파주 투어", districts: ["경기 용인", "경기 파주"] },
-        { label: "광주 & 파주 투어", districts: ["경기 광주", "경기 파주"] }
-    ];
+    // 2일차 오후 서울 근교 세부 코스 (단일 지역)
+    const suburbRegionKeys = ["경기 시흥/광명", "경기 용인", "경기 광주", "경기 파주"];
 
     let selectedStep1 = null;
 
@@ -652,10 +645,10 @@
     }
 
     function pickSuburbDetail() {
-        const pickedPair = suburbTourPairs[Math.floor(Math.random() * suburbTourPairs.length)];
-        const selectedPlaces = selectFourPlaces(suburbPlaces, pickedPair.districts);
+        const pickedRegion = suburbRegionKeys[Math.floor(Math.random() * suburbRegionKeys.length)];
+        const selectedPlaces = selectFourPlaces(suburbPlaces, [pickedRegion]);
 
-        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedPair.label}</strong></div>`;
+        let listHtml = `<div style="font-size: 1.2rem; margin-bottom: 12px;">🎉 세부 코스: <strong>[근교] ${pickedRegion} 투어</strong></div>`;
         listHtml += `<div class="detail-place-list">`;
 
         selectedPlaces.forEach(p => {
